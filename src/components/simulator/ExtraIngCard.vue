@@ -9,12 +9,16 @@
     ing: Object,       //食材オブジェクト
     ingKey: String     //食材キー
   })
+  
+  //TODO共通化
+  const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
+
 </script>
 
 <template>
   <!-- 追加食材パネル -->
   <div class="ing-card">
-    <img :src="ing.img" :alt="ing.name" class="ing-img">
+    <img :src="imgUrl(ing.img)" :alt="ing.name" class="ing-img">
     <div class="ing-name">{{ ing.name }}</div>
     <div class="ing-strength">エナジー：{{ ing.strength }}</div>
     <div class="ing-controls">

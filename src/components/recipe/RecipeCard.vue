@@ -8,13 +8,16 @@
   const totalIngredients = computed(() =>
       props.recipe.requireIngredients.reduce((sum, ing) => sum + ing.num, 0)
   );
+  
+  //TODO共通化
+  const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
 </script>
 
 <template>
   <!-- レシピ情報 -->
   <div class="recipe-card">
     <!-- メイン画像 -->
-    <img :src="recipe.img" :alt="recipe.name" class="recipe-img">
+    <img :src="imgUrl(recipe.img)" :alt="recipe.name" class="recipe-img">
     <p class="recipe-name">{{ recipe.name }}</p>
     
     <!-- 基本情報 -->
@@ -30,7 +33,7 @@
           :key="ing.ingredient.name"
           class="ingredient-item"
       >
-          <img :src="ing.ingredient.img" :alt="ing.ingredient.name" class="ing-img">
+          <img :src="imgUrl(ing.ingredient.img)" :alt="ing.ingredient.name" class="ing-img">
           <span class="ing-count">×{{ ing.num }}</span>
       </div>
     </div> <!-- 必要食材 -->
