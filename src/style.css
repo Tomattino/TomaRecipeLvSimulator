@@ -1,0 +1,81 @@
+/* ========================================
+   元の index.html のデザインに寄せたグローバルスタイル
+   レスポンシブ対応（スマホで縦並び、PCで余白・最大幅）
+   ======================================== */
+
+:root {
+  font-family: sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 元HTMLと同じ：薄いグレー背景でページ全体 */
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f0f2f5;
+  color: #333;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* リンク（使う場合用） */
+a {
+  font-weight: 500;
+  color: #3498db;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #2980b9;
+}
+
+/* 見出し：中央寄せ＋トマトアイコン用の余白 */
+h1 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.2;
+  margin: 10px 0;
+}
+
+h2, h3 {
+  margin: 0.5em 0;
+}
+
+/* ボタン共通（オレンジはコンポーネントで上書き） */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #e0e0e0;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #d0d0d0;
+}
+
+/* アプリ全体：幅制限して中央に（大きい画面でも読みやすい） */
+#app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+/* スマホ：パディング少し減らす */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+}
