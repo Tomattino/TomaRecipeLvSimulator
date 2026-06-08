@@ -13,7 +13,7 @@ export class CookStatusMap {
   *  	
   **/
   constructor() {
-      this._map = {}
+      this._map = {};
   }
 
   /**	
@@ -28,7 +28,7 @@ export class CookStatusMap {
       isSunday: false,
       isCritical: false,
       extraIngredients: {}
-    }
+    };
   }
 
 
@@ -39,8 +39,8 @@ export class CookStatusMap {
   * 
   **/  
   toggleSunday(cookIndex) {
-      const status = this.getStatus(cookIndex)
-      this._map[cookIndex] = { ...status, isSunday: !status.isSunday }
+      const status = this.getStatus(cookIndex);
+      this._map[cookIndex] = { ...status, isSunday: !status.isSunday };
   }
 
 
@@ -51,8 +51,8 @@ export class CookStatusMap {
   * 
   **/  
   toggleCritical(cookIndex) {
-      const status = this.getStatus(cookIndex)
-      this._map[cookIndex] = { ...status, isCritical: !status.isCritical }
+      const status = this.getStatus(cookIndex);
+      this._map[cookIndex] = { ...status, isCritical: !status.isCritical };
   }
 
   /**	
@@ -64,11 +64,11 @@ export class CookStatusMap {
   * 
   **/    
   setExtraQty(cookIndex, ingKey, qty) {
-      const status = this.getStatus(cookIndex)
+      const status = this.getStatus(cookIndex);
       this._map[cookIndex] = {
           ...status,
           extraIngredients: { ...status.extraIngredients, [ingKey]: Math.max(qty,0) }
-      }
+      };
   }
 
   /**	
@@ -80,8 +80,22 @@ export class CookStatusMap {
   * 
   **/
   adjustExtraQty(cookIndex, ingKey, delta) {
-      const current = this.getStatus(cookIndex).extraIngredients[ingKey] ?? 0
+      const current = this.getStatus(cookIndex).extraIngredients[ingKey] ?? 0;
       
-      this.setExtraQty(cookIndex, ingKey, Math.max(0, current + delta))
+      this.setExtraQty(cookIndex, ingKey, Math.max(0, current + delta));
+  }
+
+  /**	
+  * 追加食材をすべてクリアする
+  * 
+  * @param {number} cookIndex - 個別シミュレーション条件紐づけキー	
+  * 
+  **/
+  clearExtraIngredients(cookIndex){
+    const status = this.getStatus(cookIndex);
+    this._map[cookIndex] = {
+      ...status,
+      extraIngredients: {} //空にする
+    };
   }
 }

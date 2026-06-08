@@ -7,7 +7,8 @@
   defineProps({
     cookIndex: Number, //調理回のインデックス
     ing: Object,       //食材オブジェクト
-    ingKey: String     //食材キー
+    ingKey: String,     //食材キー
+    requiredQty: Number //レシピで必要な食材個数
   })
   
   //TODO共通化
@@ -21,6 +22,10 @@
     <img :src="imgUrl(ing.img)" :alt="ing.name" class="ing-img">
     <div class="ing-name">{{ ing.name }}</div>
     <div class="ing-strength">エナジー：{{ ing.strength }}</div>
+    <div class="ing-required" :style="{ visibility: requiredQty > 0 ? 'visible' : 'hidden' }">
+      レシピ: {{ requiredQty }} 個<br/>
+      合計: {{ requiredQty + store.getExtraQty(cookIndex, ingKey) }} 個
+    </div>
     <div class="ing-controls">
       <input type="number"
         min="0"
@@ -36,7 +41,7 @@
 </template>
 
 <style scoped>  
-  .ing-img { width: 24px; height: 24px; object-fit: contain; }  /* 32px→24px */
+  .ing-img { width: 24px; height: 24px; object-fit: contain; }  
   .ing-strength { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: auto;}
   .ing-card { border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 2px; text-align: center; background: rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; gap: 2px; }
   .ing-name { font-size: 12px; font-weight: bold; line-height: 1.2; color: rgba(255,255,255,0.85); }
@@ -68,4 +73,5 @@
     -webkit-appearance: none;
     margin: 0;
   }
+  .ing-required { font-size: 10px; color: rgba(255,255,255,0.7); }
 </style>

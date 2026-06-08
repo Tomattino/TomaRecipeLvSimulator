@@ -20,9 +20,9 @@ import { CookStatusMap } from '../models/simulator/CookStatusMap.js' //料理結
 
 export const useSimulatorStore = defineStore('simulator', () => {
   // ── state:   データ（reactive な変数） ──────────────────────────────
-  const config = reactive(new RecipeLvSimulatorConfig(recipeLevelMaster)) // シミュレータ設定
-  const selectedCategory = ref('curry') // 選択カテゴリの初期値
-  const cookStatusMap = reactive(new CookStatusMap()) //シミュレーション関係モデル
+  const config = reactive(new RecipeLvSimulatorConfig(recipeLevelMaster)); // シミュレータ設定
+  const selectedCategory = ref('curry'); // 選択カテゴリの初期値
+  const cookStatusMap = reactive(new CookStatusMap()); //シミュレーション関係モデル
   
 
   // 初期カテゴリに合わせて初期表示レシピを設定
@@ -30,75 +30,83 @@ export const useSimulatorStore = defineStore('simulator', () => {
     curry: curryRecipes,
     salad: saladRecipes,
     dessert: dessertRecipes
-  }
+  };
 
   if (!config.selectedRecipeName) {
-    config.selectedRecipeName = Object.values(initialRecipes[selectedCategory.value])[0]?.name ?? ''
+    config.selectedRecipeName = Object.values(initialRecipes[selectedCategory.value])[0]?.name ?? '';
   }
   
-  
-  
+  // 追加食材編集モーダルで編集中のキーを格納(null=モーダル閉じてる、数値=編集中のcookIndex)
+  const activeEditCookIndex = ref(null);
+
+
+
   // ── getters: 計算値（computed と同じ） ────────────────────────────
   //■料理カテゴリの変更
   // 選択中のレシピオブジェクトを返す
   const currentRecipes = computed(() => {
-    if (selectedCategory.value === 'salad') return saladRecipes
-    if (selectedCategory.value === 'curry') return curryRecipes
-    if (selectedCategory.value === 'dessert') return dessertRecipes
-  })
+    if (selectedCategory.value === 'salad') return saladRecipes;
+    if (selectedCategory.value === 'curry') return curryRecipes;
+    if (selectedCategory.value === 'dessert') return dessertRecipes;
+  });
   
   //■ 選択料理の変更
   //config.selectedRecipeName が変わると自動で再計算される
   const targetRecipe = computed(() =>
     Object.values(currentRecipes.value).find(d => d.name === config.selectedRecipeName)
-  )
+  );
 
 
   //■ 料理レベルシミュレーション計算結果
   const results = computed(() => {
-    if (!targetRecipe.value) return null
+    if (!targetRecipe.value) return null;
 
     // 依存関係明示用(更新もれの防止)
-    const _start = config.startLevel //開始レベル
-    const _end = config.endLevel //目標レベル
-    const _initial = config.initialExp //獲得済みEXP
-    const _field = config.fieldBonus //フィールドボーナス
-    const _event = config.eventBonus //イベントボーナス
+    const _start = config.startLevel; //開始レベル
+    const _end = config.endLevel; //目標レベル
+    const _initial = config.initialExp; //獲得済みEXP
+    const _field = config.fieldBonus; //フィールドボーナス
+    const _event = config.eventBonus; //イベントボーナス
     
     return new RecipeLvSimulatorResultList({
         config , //シミュレーション設定
         recipe: targetRecipe.value , //選択中料理
         levelMaster: recipeLevelMaster , //料理レベルマスター
         cookStatusMap //料理結果 判定条件紐づけmap
-    })
-  })
-
-
+    });
+  });
   
   // ── actions: 操作（メソッドと同じ） ────────────────────────────
   //■カテゴリ変更時にカテゴリ内の最初の料理を表示
   watch(selectedCategory, () => {
-      config.selectedRecipeName = Object.values(currentRecipes.value)[0]?.name ?? ''
-  })
+      config.selectedRecipeName = Object.values(currentRecipes.value)[0]?.name ?? '';
+  });
 
   // ■ 余剰経験値算出
   // 必要経験値更新時に値の取得および余剰経験値および初期経験値を計算する
   const setExpForNextLv = (val) => {
-    config.expForNextLv = val
-  }
+    config.expForNextLv = val;
+  };
 
   // ■判定条件紐づけmap更新用
-  const toggleSunday = (cookIndex) => cookStatusMap.toggleSunday(cookIndex) //日曜日フラグ
-  const toggleCritical = (cookIndex) => cookStatusMap.toggleCritical(cookIndex) //大成功フラグ
+  const toggleSunday = (cookIndex) => cookStatusMap.toggleSunday(cookIndex); //日曜日フラグ
+  const toggleCritical = (cookIndex) => cookStatusMap.toggleCritical(cookIndex); //大成功フラグ
   
-  // TODO: 追加食材入力をモーダル化したときにロジック見直し
-  const setExtraQty = (cookIndex, ingKey, qty) => cookStatusMap.setExtraQty(cookIndex, ingKey, qty) //追加食材個数を増やす
-  const adjustExtraQty = (cookIndex, ingKey, delta) => cookStatusMap.adjustExtraQty(cookIndex, ingKey, delta) //追加食材数増減
+  // ■追加食材入力関係
+  const setExtraQty = (cookIndex, ingKey, qty) => cookStatusMap.setExtraQty(cookIndex, ingKey, qty); //追加食材個数を増やす
+  const adjustExtraQty = (cookIndex, ingKey, delta) => cookStatusMap.adjustExtraQty(cookIndex, ingKey, delta); //追加食材数増減
   
-  const getExtraQty = (cookIndex, ingKey) => cookStatusMap.getStatus(cookIndex).extraIngredients?.[ingKey] ?? 0 //追加食材数取得
+  const getExtraQty = (cookIndex, ingKey) => cookStatusMap.getStatus(cookIndex).extraIngredients?.[ingKey] ?? 0; //追加食材数取得
   
+  //■追加食材モーダル関係
+  const openIngModal  = (cookIndex) => activeEditCookIndex.value = cookIndex;//追加食材モーダル起動
+  const closeIngModal = () => activeEditCookIndex.value = null;//追加食材モーダルを閉じる
+  
+  //■追加食材のクリア
+  const clearExtraIngredients = (cookIndex) => cookStatusMap.clearExtraIngredients(cookIndex);
 
 
+  
   // コンポーネントで使用する変数
   return {
     // ------ シミュレーション設定 ------
@@ -113,13 +121,20 @@ export const useSimulatorStore = defineStore('simulator', () => {
     results, //シミュレーション結果
     cookStatusMap, //個別シミュレーション条件紐づけ用
 
+    // ------ 追加食材モーダル ------
+    activeEditCookIndex,
+
     // ------ アクション(各動きは上記参照)  ------    
     setExpForNextLv,
     toggleSunday,
     toggleCritical,
     setExtraQty,
     adjustExtraQty,
-    getExtraQty
+    getExtraQty,
+    openIngModal,
+    closeIngModal,
+    clearExtraIngredients,
+
   }
 
 })

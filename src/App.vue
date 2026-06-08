@@ -4,6 +4,9 @@
   import SimulationHeader from './components/simulator/SimulationHeader.vue'
   // シミュレーション結果管理用コンポーネント
   import SimulationResultList from './components/simulator/SimulationResultList.vue'
+  
+  // 追加食材モーダルコンポーネント
+  import ExtraIngModal from './components/simulator/ExtraIngModal.vue'
 
 </script>
 
@@ -12,7 +15,7 @@
 
     <SimulationHeader />
     <SimulationResultList />
-
+    <ExtraIngModal/>
   </div>
 </template>
 
