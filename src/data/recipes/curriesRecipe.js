@@ -12,7 +12,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 32),
             new IngredientsInDishes(pokesleepIngredients["glossyAvocado"], 22),
         ], 
-        1.78
+        1.78 //要検証 1.77993～1.77999?
     ),
     "iaigiriSukiyakiCurry": new Recipe(
         "いあいぎりすき焼きカレー", 
@@ -137,7 +137,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["softPotato"], 9),
             new IngredientsInDishes(pokesleepIngredients["tastyMushroom"], 14),
         ], 
-        1.17
+        1.205//要検証
     ),
     "bulkUpBeanCurry": new Recipe(
         "ビルドアップマメカレー", 
@@ -148,7 +148,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 4),
             new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 4),
         ], 
-        1.17
+        1.205//要検証
     ),
     "softPotatoChowder": new Recipe(
         "ほっこりホワイトシチュー", 
@@ -158,7 +158,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["softPotato"], 8),
             new IngredientsInDishes(pokesleepIngredients["tastyMushroom"], 4),
         ], 
-        1.17
+        1.205//要検証
     ),
     "softOmeletteCurry": new Recipe(
         "とけるオムカレー", 
@@ -167,7 +167,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 10),
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 6),
         ], 
-        1.11
+        1.188//要検証
     ),
     "solarPowerTomatoCurry": new Recipe(
         "サンパワートマトカレー", 
@@ -176,7 +176,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 5),
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 10),
         ], 
-        1.11
+        1.188//要検証
     ),
     "droughtCutletCurry": new Recipe(
         "ひでりカツレツカレー", 
@@ -185,7 +185,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 10),
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 5),
         ], 
-        1.11
+        1.188//要検証
     ),
     "cheeseburgerCurry": new Recipe(
         "満腹チーズバーグカレー", 
@@ -194,7 +194,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 8),
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 8),
         ], 
-        1.11
+        1.188//要検証
     ),
     "beanBurgerCurry": new Recipe(
         "マメバーグカレー", 
@@ -202,7 +202,7 @@ export const curryRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 7),
         ], 
-        1.188//要検証1.06
+        1.188//要検証
     ),
     "babyHoneyCurry": new Recipe(
         "ベイビィハニーカレー", 
@@ -210,7 +210,7 @@ export const curryRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["honey"], 7),
         ], 
-        1.188//要検証1.06
+        1.188//要検証
     ),
     "simpleChowder": new Recipe(
         "たんじゅんホワイトシチュー", 
@@ -218,7 +218,7 @@ export const curryRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 7),
         ], 
-        1.188//要検証1.06
+        1.188//要検証
     ),
     "fancyAppleCurry": new Recipe(
         "とくせんリンゴカレー", 
@@ -226,6 +226,6 @@ export const curryRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 7),
         ], 
-        1.188//要検証1.06
+        1.188//要検証
     ),
 };

@@ -170,7 +170,7 @@ export const dessertRecipes = {
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 7),
             new IngredientsInDishes(pokesleepIngredients["honey"], 9),
         ], 
-        1.17
+        1.205 //要検証
     ),
     "petalDanceChocolateTart": new Recipe(
         "はなびらのまいチョコタルト", 
@@ -187,8 +187,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["greengrassSoybeans"], 15),
             new IngredientsInDishes(pokesleepIngredients["soothingCacao"], 8),
-        ], 
-        1.17
+        ],
+        1.205 //要検証
     ),
     "bigMalasada": new Recipe(
         "おおきいマラサダ", 
@@ -197,8 +197,8 @@ export const dessertRecipes = {
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 7),
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 10),
             new IngredientsInDishes(pokesleepIngredients["honey"], 6),
-        ], 
-        1.17
+        ],
+        1.205 //要検証
     ),
     "stalwartVegetableJuice": new Recipe(
         "マイペースやさいジュース", 
@@ -206,8 +206,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 7),
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 9),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "cloudNineSoyCake": new Recipe(
         "かるわざソイケーキ", 
@@ -215,8 +215,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["greengrassSoybeans"], 7),
             new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 8),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "emberGingerTea": new Recipe(
         "ひのこのジンジャーティー", 
@@ -224,8 +224,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 7),
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 9),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "fluffySweetPotatoes": new Recipe(
         "じゅくせいスイートポテト", 
@@ -233,8 +233,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 5),
             new IngredientsInDishes(pokesleepIngredients["softPotato"], 9),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "luckyChantApplePie": new Recipe(
         "ねがいごとアップルパイ", 
@@ -242,8 +242,8 @@ export const dessertRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 4),
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 12),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "craftSodaPop": new Recipe(
         "クラフトサイコソーダ", 

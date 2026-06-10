@@ -56,7 +56,7 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 17),
             new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 25),
         ], 
-        1.47
+        1.48
     ),
     "ninjaSalad": new Recipe(
         "ニンジャサラダ", 
@@ -139,7 +139,7 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 8),
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 10),
         ], 
-        1.25
+        1.25 
     ),
     "gluttonyPotatoSalad": new Recipe(
         "くいしんぼうポテトサラダ", 
@@ -159,7 +159,7 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["soothingCacao"], 14),
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 9),
         ], 
-        1.17
+        1.205 //要検証
     ),
     "waterVeilTofuSalad": new Recipe(
         "うるおいとうふサラダ", 
@@ -178,8 +178,8 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["softPotato"], 3),
             new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 5),
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 6),
-        ], 
-        1.17
+        ],
+        1.205 //要検証
     ),
     "moomooCaprese": new Recipe(
         "モーモーカプレーゼ", 
@@ -188,8 +188,8 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 12),
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 5),
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 6),
-        ], 
-        1.17
+        ],
+        1.205 //要検証
     ),
     "immunityLeekSalad": new Recipe(
         "めんえきねぎサラダ", 
@@ -197,8 +197,8 @@ export const saladRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["largeLeek"], 10),
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 5),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "furyAttackCornSalad": new Recipe(
         "みだれづきコーンサラダ", 
@@ -216,8 +216,8 @@ export const saladRecipes = {
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 5),
             new IngredientsInDishes(pokesleepIngredients["pureOil"], 3),
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 15),
-        ], 
-        1.17
+        ],
+        1.205 //要検証
     ),
     "heatWaveTofuSalad": new Recipe(
         "ねっぷうとうふサラダ", 
@@ -225,8 +225,8 @@ export const saladRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["greengrassSoybeans"], 10),
             new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 6),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "snowCloakCaesarSalad": new Recipe(
         "ゆきかきシーザーサラダ", 
@@ -234,31 +234,31 @@ export const saladRecipes = {
         [
             new IngredientsInDishes(pokesleepIngredients["moomooMilk"], 10),
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 6),
-        ], 
-        1.11
+        ],
+        1.188 //要検証
     ),
     "snoozyTomatoSalad": new Recipe(
         "あんみんトマトサラダ", 
         "/images/Recipe/Salad/snoozytomatosalad.png", 
         [
             new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 8),
-        ], 
-        1.06
+        ],
+        1.188 //要検証
     ),
     "beanHamSalad": new Recipe(
         "マメハムサラダ", 
         "/images/Recipe/Salad/beanhamsalad.png", 
         [
             new IngredientsInDishes(pokesleepIngredients["beanSausage"], 8),
-        ], 
-        1.06
+        ],
+        1.188 //要検証
     ),
     "fancyAppleSalad": new Recipe(
         "とくせんリンゴサラダ", 
         "/images/Recipe/Salad/fancyapplesalad.png", 
         [
             new IngredientsInDishes(pokesleepIngredients["fancyApple"], 8),
-        ], 
-        1.06
+        ],
+        1.188 //要検証
     ),
 };

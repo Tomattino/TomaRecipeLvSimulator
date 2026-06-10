@@ -28,33 +28,13 @@ export class CookRecord {
   }
   
   /**
-  *  追加食材エナジーとフィールドボーナス、イベント倍率を含めたエナジーを取得
-  * 
-  */
-  get strength() {
-    return this.dish.calcStrength(this.extraIngredients)
-  }
-
-  /**
   *  倍率を含めた最終エナジーを取得する
   * 
   */
   get finalEnergy() {
-    return Math.round(this.strength * this.multiplier)
+    return this.dish.finalEnergy(this.extraIngredients, this.isSunday, this.isCritical);
   }
 
-  /**
-  *  倍率を取得する
-  *  [通常の場合]
-  *   - ×1
-  *  [大成功の場合]
-  *   - 日曜日：×3
-  *   - それ以外：×2
-  *  
-  */
-  get multiplier() {
-    if (this.isCritical) return this.isSunday ? 3 : 2
-    return 1
-  }
+  
 
 }
