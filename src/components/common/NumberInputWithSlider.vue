@@ -1,5 +1,6 @@
 <script setup>
-  /* v-model で渡された値が modelValue、変更時は update:modelValue を emit すると親に伝わります */
+  import { ref, nextTick, computed } from 'vue'
+
   const props = defineProps({
     modelValue: { type: Number, required: true }, //数値
     label: { type: String, default: '数値' }, //見出しラベル
@@ -12,13 +13,32 @@
     inputConverter: { type: Function, default: (val) => val } //入力値を変換する場合のFunction
   });
   
+
+  const rangeRef = ref(null); //スライダー値同期用
+  const numberRef = ref(null); //テキスト値同期用
   const emit = defineEmits(['update:modelValue']);
   
   //変更した値を変換して返却(テキストボックス、レンジの値変更で発火)
-  const handleInput = (e) => {
-    const val = Number(e.target.value);
-    emit('update:modelValue', props.inputConverter(val));
-  };
+  const internalValue = computed({
+  get: () => props.displayConverter(props.modelValue),
+  set: (val) => {
+      const num = Number(val);
+      if (!isNaN(num)) {
+        emit('update:modelValue', props.inputConverter(num));
+        nextTick(() => {
+          if (rangeRef.value) {
+            rangeRef.value.value = props.displayConverter(props.modelValue);
+          }
+        });
+      }
+    }
+  });
+
+  const handleBlur = () => {
+    if (numberRef.value) {
+      numberRef.value.value = props.displayConverter(props.modelValue)
+    }
+  }
 
 </script>
 
@@ -30,8 +50,9 @@
         <input 
           type="number" 
           class="number-input"
-          :value="displayConverter(modelValue)" 
-          @input="handleInput"
+          ref="numberRef"
+          v-model="internalValue"
+          @blur="handleBlur"
           :min="min" 
           :max="max"
           :step="step"
@@ -42,8 +63,8 @@
     
     <input 
       type="range" 
-      :value="displayConverter(modelValue)" 
-      @input="handleInput"
+      ref="rangeRef"
+      v-model="internalValue"
       :min="min" 
       :max="max"
       :step="step" 
