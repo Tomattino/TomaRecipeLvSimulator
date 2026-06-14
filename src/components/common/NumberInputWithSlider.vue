@@ -36,7 +36,7 @@
 
   const handleBlur = () => {
     if (numberRef.value) {
-      numberRef.value.value = props.displayConverter(props.modelValue)
+      numberRef.value.value = props.displayConverter(props.modelValue);
     }
   }
 

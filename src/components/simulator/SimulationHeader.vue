@@ -1,18 +1,17 @@
 <script setup>
-  
+  import { ref } from 'vue'
+
   /****  コンポーネント取り込み ****/
   import NumberInputWithSlider from '../common/NumberInputWithSlider.vue'//数値入力スライダー
   import RecipeCard from '../recipe/RecipeCard.vue'//レシピ情報表示用カード
-  
+  import RecipeSelectModal from '../recipe/RecipeSelectModal.vue' //レシピ選択モーダル
 
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js'
   const store = useSimulatorStore()
   
-  // 選択レシピの更新
-  const handleDishChange = (e) => {
-    store.config.selectedRecipeName = e.target.value
-  }
+
+  const isModalOpen = ref(false); //食材選択モーダル表示制御
   
   // 余剰EXP再計算
   const onExpForNextLvInput = (e) => {
@@ -24,28 +23,13 @@
 <template>
   <div class="header-info">
     <h1 class="title">料理レベ上げシミュ<span class="tomato-icon" aria-hidden="true">（あるふぁ版）</span></h1>
-    <!-- 料理カテゴリ切替タブ -->
-    <div class="category-tabs">
-      <button :class="['tab', { active: store.selectedCategory === 'curry' }]"
-          @click="store.selectedCategory = 'curry'">カレー</button>
-      <button :class="['tab', { active: store.selectedCategory === 'salad' }]"
-          @click="store.selectedCategory = 'salad'">サラダ</button>
-      <button :class="['tab', { active: store.selectedCategory === 'dessert' }]"
-          @click="store.selectedCategory = 'dessert'">デザート</button>
-    </div>
-    
-    <!-- 料理選択セレクトボックス：全幅 -->
-    <select class="dish-selector" :value="store.config.selectedRecipeName" @change="handleDishChange">
-      <option v-for="(recipe, key) in store.currentRecipes" :key="key" :value="recipe.name">
-          {{ recipe.name }}
-      </option>
-    </select>
 
     <!-- メインエリア：画像左 / 設定右 -->
     <div class="main-area">
       <!-- 左：レシピカード -->
       <div class="recipe-col">
         <RecipeCard v-if="store.targetRecipe" :recipe="store.targetRecipe" />
+        <button class="select-btn"  @click="isModalOpen = true">レシピ選択</button>
       </div>
       <!-- 右：各種設定 -->
       <div class="settings-col">
@@ -88,11 +72,11 @@
                     class="text-input">
               </div>
             </div>
-            <button @click="store.run?.()" class="calc-btn">計算する</button>
         </div>
       </div>
     </div>
   </div>
+  <RecipeSelectModal v-model="isModalOpen" />
 </template>
 
 <style scoped>
@@ -121,21 +105,6 @@
     margin-left: 6px;
 }
 
-.dish-selector {
-    width: 100%;
-    font-size: 0.9em;
-    padding: 6px 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(100, 160, 255, 0.4);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    cursor: pointer;
-}
-
-.dish-selector option {
-    background: #1a3a5c;
-}
-
 /* メインエリア：横並び */
 .main-area {
     display: flex;
@@ -148,6 +117,23 @@
     width: 160px;
     display: flex;
     flex-direction: column;
+    gap: 8px;
+}
+
+.select-btn {
+    width: 100%;
+    padding: 7px;
+    border-radius: 8px;
+    border: 1px solid rgba(100, 160, 255, 0.4);
+    background: rgba(100, 160, 255, 0.15);
+    color: white;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.select-btn:hover {
+    background: rgba(100, 160, 255, 0.3);
 }
 
 .settings-col {
@@ -210,28 +196,6 @@
     font-size: 0.75em;
 }
 
-.calc-btn {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #ff9800, #ff6f00);
-    color: white;
-    border: none;
-    padding: 9px 22px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 3px 10px rgba(255, 152, 0, 0.4);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-
-.calc-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 14px rgba(255, 152, 0, 0.5);
-}
-
-.calc-btn:active {
-    transform: translateY(0);
-}
-
 /* モバイル：縦積みに */
 @media (max-width: 520px) {
     .main-area {
@@ -241,28 +205,5 @@
     .recipe-col {
         width: 100%;
     }
-}
-
-.category-tabs {
-    display: flex;
-    gap: 6px;
-}
-
-.tab {
-    flex: 1;
-    padding: 5px;
-    border: 1px solid rgba(100, 160, 255, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    font-size: 0.85em;
-}
-
-.tab.active {
-    background: rgba(100, 160, 255, 0.2);
-    border-color: rgba(100, 160, 255, 0.6);
-    color: white;
-    font-weight: bold;
 }
 </style>
