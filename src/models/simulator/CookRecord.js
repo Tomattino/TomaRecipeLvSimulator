@@ -18,13 +18,15 @@ export class CookRecord {
    * @param {boolean} isSunday - 日曜日フラグ
    * @param {boolean} isCritical - 大成功フラグ
    * @param {number} cookIndex - 個別シミュレーション条件紐づけキー
+   * @param {number} manualResult - 手入力の料理結果
    */
-  constructor({ dish, extraIngredients = [], isSunday, isCritical, cookIndex }) {
+  constructor({ dish, extraIngredients = [], isSunday, isCritical, cookIndex , manualInputEnergy = undefined}) {
     this.dish = dish;
     this.extraIngredients = extraIngredients;
     this.isSunday = isSunday; 
     this.isCritical = isCritical;
     this.cookIndex = cookIndex;
+    this.manualInputEnergy =  manualInputEnergy;
   }
   
   /**
@@ -32,7 +34,7 @@ export class CookRecord {
   * 
   */
   get finalEnergy() {
-    return this.dish.finalEnergy(this.extraIngredients, this.isSunday, this.isCritical);
+    return this.manualInputEnergy ?? this.dish.finalEnergy(this.extraIngredients, this.isSunday, this.isCritical);
   }
 
   

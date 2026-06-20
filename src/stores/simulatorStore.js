@@ -23,7 +23,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
   const config = reactive(new RecipeLvSimulatorConfig(recipeLevelMaster)); // シミュレータ設定
   const selectedCategory = ref('curry'); // 選択カテゴリの初期値
   const cookStatusMap = reactive(new CookStatusMap()); //シミュレーション関係モデル
-  
+  const manualEnergyMap = reactive({});
 
   // 初期カテゴリに合わせて初期表示レシピを設定
   const initialRecipes = {
@@ -72,7 +72,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
         config , //シミュレーション設定
         recipe: targetRecipe.value , //選択中料理
         levelMaster: recipeLevelMaster , //料理レベルマスター
-        cookStatusMap //料理結果 判定条件紐づけmap
+        cookStatusMap, //料理結果 判定条件紐づけmap
+        manualEnergyMap //手入力の料理エナジー
     });
   });
   
@@ -104,9 +105,19 @@ export const useSimulatorStore = defineStore('simulator', () => {
   
   //■追加食材のクリア
   const clearExtraIngredients = (cookIndex) => cookStatusMap.clearExtraIngredients(cookIndex);
-
-
   
+  // ■手入力エナジー
+  // 追加
+  const setManualEnergy = (cookIndex, val) => {
+    if(typeof val !== 'number' || val < 0) return;
+    manualEnergyMap[cookIndex] = val;
+  }
+  // クリア
+  const clearManualEnergy = (cookIndex) => {
+    delete manualEnergyMap[cookIndex];
+  }
+
+
   // コンポーネントで使用する変数
   return {
     // ------ シミュレーション設定 ------
@@ -120,6 +131,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
     // ------ シミュレーション結果  ------
     results, //シミュレーション結果
     cookStatusMap, //個別シミュレーション条件紐づけ用
+    manualEnergyMap, //手入力結果
 
     // ------ 追加食材モーダル ------
     activeEditCookIndex,
@@ -134,7 +146,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
     openIngModal,
     closeIngModal,
     clearExtraIngredients,
-
+    setManualEnergy,
+    clearManualEnergy
   }
 
 })

@@ -1,16 +1,28 @@
 <script setup>
   /****  コンポーネント取り込み ****/
-
+  import { ref } from 'vue';
   
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
   const store = useSimulatorStore();
 
-  defineProps({
+  const props = defineProps({
       cook: Object, //各回の料理結果
       localIndex: Number //レベル内で何回目か
   });
+  
+  const editMode = ref(false);
+  const manualInputVal = ref('');
 
+  const handleSave = () => {
+    if(manualInputVal.value === '' || manualInputVal.value === null) {
+        editMode.value = false;
+        return;
+    }
+    store.setManualEnergy(props.cook.cookIndex, Number(manualInputVal.value));
+    editMode.value = false;
+    manualInputVal.value = '';
+  }
   //TODO共通化
   const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
 </script>
@@ -21,7 +33,27 @@
             <!-- 結果表示 -->
             <span class="cook-num">{{ localIndex }} 回目</span>
             <span class="energy" :class="{ 'is-critical-text': cook.isCritical }">
-                {{ cook.finalEnergy.toLocaleString() }} エナジー
+                <!-- 表示モード -->
+                <div v-if ="!editMode">
+                  <!-- 計算値 -->
+                  <div v-if="store.manualEnergyMap[cook.cookIndex] === undefined" >
+                    {{ cook.finalEnergy.toLocaleString() }} エナジー 
+                    <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
+                  </div>
+                  <div v-else >
+                    {{ store.manualEnergyMap[cook.cookIndex].toLocaleString() }} エナジー
+                    <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
+                    <div class="icon-btn"  @click.stop="store.clearManualEnergy(cook.cookIndex)" >🗑</div>
+                    <span class="manual-badge">手入力</span>
+                  </div>
+                </div>
+                <!-- 入力モード -->
+                <div v-else>
+                  <input type="number" v-model="manualInputVal" @keydown.enter="handleSave">
+                  <div class="icon-btn" @click.stop="handleSave">✅</div>
+                  <div class="icon-btn" @click.stop="editMode = false">×</div>
+                </div>
+
             </span> 
 
             <!-- 条件設定 -->
@@ -69,5 +101,23 @@
     }
     .sunday-btn.active  { background: #e67e22; border-color: #e67e22; }
     .critical-btn.active { background: rgba(241,196,15,0.3); border-color: #f1c40f; }
-
+    .manual-badge {
+    font-size: 0.7em;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: rgba(150, 150, 150, 0.25);
+    border: 1px solid rgba(150, 150, 150, 0.4);
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+    }
+    .icon-btn {
+        cursor: pointer;
+        user-select: none;
+        display: inline-block;
+        padding: 2px 4px;
+        border-radius: 4px;
+        transition: background 0.1s, opacity 0.1s;
+    }
+    .icon-btn:hover  { background: rgba(255,255,255,0.12); }
+    .icon-btn:active { opacity: 0.6; }
 </style>
