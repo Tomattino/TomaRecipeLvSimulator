@@ -17,13 +17,16 @@ export class LevelSimulationResult {
    * @param {object} levelData - レベル情報(必要EXP含む)
    * @param {number} carryOver - 前のレベルからの繰り越しEXP
    * @param {object} cookStatusMap - 日曜/大成功/追加食材の設定
+   * @param {object} manualEnergyMap - 手入力したエナジー
    * @param {number} cookIndexStart - レベル内の最初の条件紐づけキー
    */
-  constructor({ dish, levelData, carryOver, cookStatusMap, cookIndexStart }) {
+  constructor({ dish, levelData, carryOver, cookStatusMap,manualEnergyMap, cookIndexStart }) {
     this.dish = dish;
     this.level = levelData.level
     this.requireExpForNext = levelData.requireExp
     this.cookStatusMap = cookStatusMap;
+    this.manualEnergyMap  = manualEnergyMap;
+
     this.carryOver = carryOver;
     this.totalEnergyInThisLevel = this.carryOver;
     this.cookIndex = cookIndexStart;
@@ -40,6 +43,7 @@ export class LevelSimulationResult {
 
     while (this.totalEnergyInThisLevel  < this.requireExpForNext) {
       const status = this.cookStatusMap.getStatus(this.cookIndex); //紐づいている条件を取得
+      const manualInputEnergy = this.manualEnergyMap?.[this.cookIndex];// 手入力の値(任意)
       
       //追加食材を取得する
       const extraIngArray = Object.entries(status.extraIngredients ?? {})
@@ -48,11 +52,13 @@ export class LevelSimulationResult {
       
       //一回分の料理結果の作成
       const cook = new CookRecord({
-          dish: this.dish
-          , extraIngredients: extraIngArray
-          , isSunday: status.isSunday
-          , isCritical: status.isCritical
-          , cookIndex: this.cookIndex
+          dish: this.dish,
+          extraIngredients: extraIngArray,
+          isSunday: status.isSunday,
+          isCritical: status.isCritical,
+          cookIndex: this.cookIndex,
+          manualInputEnergy: manualInputEnergy
+
       });
       
       tmpCooks.push(cook);

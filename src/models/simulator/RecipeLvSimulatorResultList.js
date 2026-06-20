@@ -17,9 +17,10 @@ export class RecipeLvSimulatorResultList {
   * @param {Recipe} recipe - 作成するレシピ
   * @param {object[]} levelMaster - 料理レベル経験値テーブルマスタ
   * @param {CookStatusMap} cookStatusMap - 個別シミュレーション条件(レベル内各結果)
+  * @param {object} manualEnergyMap - 手入力したエナジー
   */
-  constructor({ config, recipe, levelMaster, cookStatusMap }) {
-    this.dishLevelsResults = this._simulateDishLevelsResults({ config, recipe, levelMaster, cookStatusMap });
+  constructor({ config, recipe, levelMaster, cookStatusMap, manualEnergyMap }) {
+    this.dishLevelsResults = this._simulateDishLevelsResults({ config, recipe, levelMaster, cookStatusMap, manualEnergyMap });
   }
 
   /**
@@ -28,7 +29,7 @@ export class RecipeLvSimulatorResultList {
   * @param {object[]} levelMaster - 料理レベル経験値テーブルマスタ
   * @param {CookStatusMap} cookStatusMap - 個別シミュレーション条件(レベル内各結果)
   */  
-  _simulateDishLevelsResults ({ config, recipe, levelMaster, cookStatusMap }) {
+  _simulateDishLevelsResults ({ config, recipe, levelMaster, cookStatusMap, manualEnergyMap }) {
     const results = []; //全シミュレーション結果
 
     let carryOver = config.initialExp; //初期取得済みEXP
@@ -49,6 +50,7 @@ export class RecipeLvSimulatorResultList {
           levelData: { level: lv, requireExp: nextLevelData.requireExp },
           carryOver,
           cookStatusMap,
+          manualEnergyMap,
           cookIndexStart
       });
 
