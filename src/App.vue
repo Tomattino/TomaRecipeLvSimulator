@@ -19,7 +19,7 @@
 
     <footer class="app-footer">
       料理レベルデータ出典(Lv66～)：<a href="https://pks.raenonx.cc/" target="_blank" rel="noopener">RaenonXポケスリ攻略ツール</a>
-      ※ 2025年6月時点のデータ
+      ※ 2026年6月時点のデータ
     </footer>
   </div>
 </template>
