@@ -16,6 +16,11 @@
     <SimulationHeader />
     <SimulationResultList />
     <ExtraIngModal/>
+
+    <footer class="app-footer">
+      料理レベルデータ出典(Lv66～)：<a href="https://pks.raenonx.cc/" target="_blank" rel="noopener">RaenonXポケスリ攻略ツール</a>
+      ※ 2025年6月時点のデータ
+    </footer>
   </div>
 </template>
 
@@ -23,4 +28,15 @@
   .app-container {
     padding: 0;
   }
+  .app-footer {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: left;
+    padding: 16px;
+  }
+  
+  .app-footer a {
+    color: rgba(0, 0, 0, 0.55);
+  }
+
 </style>

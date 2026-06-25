@@ -64,5 +64,10 @@ export const recipeLevelMaster = [
     { level: 62, bonus: 2.15, requireExp: 621231 },
     { level: 63, bonus: 2.21, requireExp: 718231 },
     { level: 64, bonus: 2.27, requireExp: 833386 },
-    { level: 65, bonus: 2.34, requireExp: 992698 }
+    { level: 65, bonus: 2.34, requireExp: 992698 },
+    { level: 66, bonus: 2.39, requireExp: 1032639 },
+    { level: 67, bonus: 2.43, requireExp: 1078591 },
+    { level: 68, bonus: 2.48, requireExp: 1121112 },
+    { level: 69, bonus: 2.52, requireExp: 1205436 },
+    { level: 70, bonus: 2.58, requireExp: 1318244 },
 ];

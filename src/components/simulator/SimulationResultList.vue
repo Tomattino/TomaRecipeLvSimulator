@@ -1,10 +1,26 @@
 <script setup>
+  import { computed } from 'vue'
+
   /****  コンポーネント取り込み ****/  
   import LevelResultBlock from './LevelResultBlock.vue' //レベルごとの結果
 
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
   const store = useSimulatorStore();
+  
+  const MEALS_PER_DAY = 3;//1日あたりの食事回数
+  
+  //レベルMAXまでに何日必要か
+  const requireDays= computed(() => {
+    return Math.floor((store.results?.totalCookCount ?? 0) / MEALS_PER_DAY); 
+  });
+  
+  //レベルMAXまでに必要な日数からあふれた余剰回数
+  const requireRemaingCnt = computed(() => {
+    return Math.floor((store.results?.totalCookCount ?? 0) % MEALS_PER_DAY);
+  });
+
+
 
 </script>
 
@@ -13,7 +29,12 @@
         <!-- 全体合計 結果 -->
         <div class="total-banner">
             <div class="total-label">合計調理回数</div>
-            <div class="total-count">{{ store.results?.totalCookCount ?? 0 }}<span class="total-unit">回</span></div>
+              <div class="total-count">
+                {{ store.results?.totalCookCount ?? 0 }}<span class="total-unit">回</span>
+              <div class="total-sub">
+                ({{ requireDays }}日<template v-if="requireRemaingCnt > 0">+{{ requireRemaingCnt }}回</template>)
+              </div>
+            </div>
         </div>
 
         <!-- レベルごとの結果リスト -->
@@ -60,4 +81,11 @@
         color: rgba(255,255,255,0.7);
         margin-left: 4px;
     }
+    .total-sub {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
 </style>
