@@ -105,7 +105,11 @@ export const useSimulatorStore = defineStore('simulator', () => {
   
   //■追加食材のクリア
   const clearExtraIngredients = (cookIndex) => cookStatusMap.clearExtraIngredients(cookIndex);
-  
+
+  //全追加食材リセット
+  const clearAllExtraIngredients = () => cookStatusMap.clearAllExtraIngredients();
+
+
   // ■手入力エナジー
   // 追加
   const setManualEnergy = (cookIndex, val) => {
@@ -116,7 +120,6 @@ export const useSimulatorStore = defineStore('simulator', () => {
   const clearManualEnergy = (cookIndex) => {
     delete manualEnergyMap[cookIndex];
   }
-
 
   // コンポーネントで使用する変数
   return {
@@ -143,11 +146,12 @@ export const useSimulatorStore = defineStore('simulator', () => {
     setExtraQty,
     adjustExtraQty,
     getExtraQty,
+    clearAllExtraIngredients,
     openIngModal,
     closeIngModal,
     clearExtraIngredients,
     setManualEnergy,
-    clearManualEnergy
+    clearManualEnergy,
   }
 
 })
