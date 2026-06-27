@@ -20,6 +20,11 @@
     return Math.floor((store.results?.totalCookCount ?? 0) % MEALS_PER_DAY);
   });
 
+  const handleResetAll = () => {
+    if (window.confirm('設定中のすべての食材がリセットされます。\n本当によろしいですか？')) {
+      store.clearAllExtraIngredients();
+    }
+  }
 
 
 </script>
@@ -35,6 +40,10 @@
                 ({{ requireDays }}日<template v-if="requireRemaingCnt > 0">+{{ requireRemaingCnt }}回</template>)
               </div>
             </div>
+
+            <button class="btn-reset" @click="handleResetAll">
+              追加食材を一括リセット
+            </button>
         </div>
 
         <!-- レベルごとの結果リスト -->
@@ -47,45 +56,57 @@
 </template>
 
 <style scoped>
-    .result-list {
-        background: linear-gradient(160deg, #1a3a5c 0%, #0f2540 100%);
-        border: 1px solid rgba(100,160,255,0.2);
-        border-radius: 16px;
-        padding: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        color: white;
-    }
-    .total-banner {
-        text-align: center;
-        padding: 16px 0 20px;
-        border-bottom: 1px solid rgba(100,160,255,0.2);
-        margin-bottom: 8px;
-    }
-    .total-label {
-        font-size: 0.8em;
-        color: rgba(255,255,255,0.5);
-        letter-spacing: 0.08em;
-        margin-bottom: 4px;
-    }
-    .total-count {
-        font-size: 3rem;
-        font-weight: bold;
-        color: white;
-        line-height: 1;
-    }
-    .total-unit {
-        font-size: 1.2rem;
-        color: rgba(255,255,255,0.7);
-        margin-left: 4px;
-    }
-    .total-sub {
-      font-size: 0.8rem;
+  .result-list {
+      background: linear-gradient(160deg, #1a3a5c 0%, #0f2540 100%);
+      border: 1px solid rgba(100,160,255,0.2);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: white;
+  }
+  .total-banner {
+      position: relative; 
+      text-align: center;
+      padding: 16px 0 20px;
+      border-bottom: 1px solid rgba(100,160,255,0.2);
+      margin-bottom: 8px;
+  }
+  .total-label {
+      font-size: 0.8em;
       color: rgba(255,255,255,0.5);
-      margin-top: 6px;
-      letter-spacing: 0.05em;
-    }
-
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+  }
+  .total-count {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+  }
+  .total-unit {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.7);
+      margin-left: 4px;
+  }
+  .total-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+  .btn-reset {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border: 1px solid rgba(255,152,0,0.5);
+    background: rgba(255,152,0,0.1);
+    color: rgba(255,152,0,0.9);
+  
+  }
+  .btn-reset:hover { background: rgba(255,252,0,0.25); }
 </style>

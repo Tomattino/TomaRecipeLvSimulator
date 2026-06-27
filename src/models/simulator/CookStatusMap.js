@@ -86,7 +86,7 @@ export class CookStatusMap {
   }
 
   /**	
-  * 追加食材をすべてクリアする
+  * 指定キーの追加食材をすべてクリアする
   * 
   * @param {number} cookIndex - 個別シミュレーション条件紐づけキー	
   * 
@@ -97,5 +97,16 @@ export class CookStatusMap {
       ...status,
       extraIngredients: {} //空にする
     };
+  }
+
+
+  /**	
+  * 登録しているすべてのキーの追加食材をクリアする
+  * 
+  **/
+  clearAllExtraIngredients(){
+    Object.keys(this._map).forEach(cookIndex => {
+      this.clearExtraIngredients(cookIndex);
+    });
   }
 }
