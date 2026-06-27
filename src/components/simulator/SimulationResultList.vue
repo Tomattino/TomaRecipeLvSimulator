@@ -3,6 +3,8 @@
 
   /****  コンポーネント取り込み ****/  
   import LevelResultBlock from './LevelResultBlock.vue' //レベルごとの結果
+  import TotalIngredientsSummary from './TotalIngredientsSummary.vue'; //全レベル通して必要になる食材数
+
 
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
@@ -19,6 +21,26 @@
   const requireRemaingCnt = computed(() => {
     return Math.floor((store.results?.totalCookCount ?? 0) % MEALS_PER_DAY);
   });
+
+
+  const totalExtraIngredients = computed(() => {
+    if (!store.results) return {};
+
+    const tmpExtraIngArr = store.results.dishLevelsResults.flatMap(level => level.cooks).flatMap(cook => cook.extraIngredients);
+    
+    const totalExtraIngredients = {};
+
+    tmpExtraIngArr.forEach((tmpIng) => {
+      const tmpIngName = tmpIng.ingredient.name;
+
+      totalExtraIngredients[tmpIngName] ??= { ingredient: tmpIng.ingredient, num: 0 };
+      totalExtraIngredients[tmpIngName].num += tmpIng.num;
+    });
+
+    return totalExtraIngredients;
+    
+  });
+
 
   const handleResetAll = () => {
     if (window.confirm('設定中のすべての食材がリセットされます。\n本当によろしいですか？')) {
@@ -41,6 +63,14 @@
               </div>
             </div>
 
+            <!-- 合計食材数 -->
+            <TotalIngredientsSummary
+              v-if="store.results"
+              :targetRecepie="store.targetRecipe"
+              :totalDishCoutnt="store.results.totalCookCount"
+              :totalExtraIngredients="totalExtraIngredients"
+            />
+            
             <button class="btn-reset" @click="handleResetAll">
               追加食材を一括リセット
             </button>
