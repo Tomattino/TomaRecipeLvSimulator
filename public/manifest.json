@@ -2,7 +2,7 @@
   "name": "ポケスリ料理Lvシミュレーター",
   "short_name": "料理Lv",
   "icons": [
-    { "src": "/TomaRecipeLvSimulator/icon.png", "sizes": "512x512", "type": "image/png" , "purpose": "any maskable"}
+    { "src": "/TomaRecipeLvSimulator/icon.png", "sizes": "512x512", "type": "image/png" , "purpose": "any"}
   ],
   "start_url": "/TomaRecipeLvSimulator/",
   "display": "standalone"
