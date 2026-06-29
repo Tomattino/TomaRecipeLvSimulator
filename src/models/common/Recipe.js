@@ -23,7 +23,7 @@ export class Recipe {
   }
   /**
    *  基本エナジーを計算
-   *  cf.) レシピ基本エナジー = Round[ (レシピ食材の総エナジー)×(1+食材の数ボーナス) ]
+   *  cf.) レシピ基本エナジー = Round[ (レシピ食材の総エナジー)×(1+食材の数ボーナス) ]→実装中の懸念より変更 Floor[ (レシピ食材の総エナジー)×(1+食材の数ボーナス) ]
    */
   _calcBaseStrength(){
     // レシピ食材の総エナジーを計算
@@ -31,6 +31,6 @@ export class Recipe {
     this.requireIngredients.forEach(tmpIngredient => {
         totalIngredientStrength += tmpIngredient.ingredient.strength * tmpIngredient.num;
     });
-    return  Math.round(totalIngredientStrength * this.ingredientsNumBonus);
+    return  Math.floor(totalIngredientStrength * this.ingredientsNumBonus);
   }
 }
