@@ -8,19 +8,25 @@
   // 追加食材モーダルコンポーネント
   import ExtraIngModal from './components/simulator/ExtraIngModal.vue'
 
+  //** 開発用 **/
+  import DevSandbox from './develop/DevSandbox.vue';
+  const isDev = import.meta.env.DEV
 </script>
 
 <template>
   <div class="app-container">
+    <!-- App.vue -->
+    <DevSandbox v-if="isDev" />
 
-    <SimulationHeader />
+
+    <!-- <SimulationHeader />
     <SimulationResultList />
     <ExtraIngModal/>
 
     <footer class="app-footer">
       料理レベルデータ出典(Lv66～)：<a href="https://pks.raenonx.cc/" target="_blank" rel="noopener">RaenonXポケスリ攻略ツール</a>
       ※ 2026年6月時点のデータ
-    </footer>
+    </footer> -->
   </div>
 </template>
 

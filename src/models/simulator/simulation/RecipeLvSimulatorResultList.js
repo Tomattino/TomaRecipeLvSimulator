@@ -4,10 +4,10 @@
  * 【概要】
  *  シミュレーション結果全体を管理するクラス
  ************************************/
-import { Dish } from '../common/Dish.js' //料理クラス
+import { Dish } from '../../common/Dish.js' //料理クラス
 import { RecipeLvSimulatorConfig } from './RecipeLvSimulatorConfig.js' //レシピシミュレータ設定条件
 import { LevelSimulationResult } from './LevelSimulationResult.js' //料理シミュレーションレベルブロック
-import { Recipe } from '../common/Recipe.js' //レシピ情報
+import { Recipe } from '../../common/Recipe.js' //レシピ情報
 import { CookStatusMap } from './CookStatusMap.js' //個別シミュレーション条件
 
 

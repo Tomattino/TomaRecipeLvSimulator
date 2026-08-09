@@ -7,9 +7,9 @@
  ************************************/
 
 import { CookRecord } from './CookRecord.js' //料理1回分の結果
-import { Dish } from '../common/Dish.js' //料理クラス
-import { pokesleepIngredients } from '../../data/ingredients/pokesleepIngredients.js' //食材マスタデータ
-import { IngredientsInDishes } from '../common/IngredientsInDishes.js' //レシピと食材の紐づけクラス
+import { Dish } from '../../common/Dish.js' //料理クラス
+import { pokesleepIngredients } from '../../../data/ingredients/pokesleepIngredients.js' //食材マスタデータ
+import { IngredientsInDishes } from '../../common/IngredientsInDishes.js' //レシピと食材の紐づけクラス
 
 export class LevelSimulationResult {
   /**

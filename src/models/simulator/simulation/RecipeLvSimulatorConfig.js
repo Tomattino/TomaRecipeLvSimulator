@@ -6,7 +6,7 @@
  * 下記設定値を取り扱う
 ************************************/
 
-import { LevelRange } from "../value/LevelRange.js"; //レベル範囲格納用クラス
+import { LevelRange } from "../../value/LevelRange.js"; //レベル範囲格納用クラス
 
 
 export class RecipeLvSimulatorConfig {
