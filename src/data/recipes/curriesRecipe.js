@@ -16,7 +16,7 @@ export const curryRecipes = {
     ),
     "greengrassCurryBun": new Recipe(
         "ワカクサカレーパン", 
-        "/images/Recipe/Curries/GreengrassCurryBun.png", 
+        "/images/Recipe/Curries/greengrasscurrybun.png", 
         [
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 20),
             new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 20),
