@@ -56,7 +56,7 @@ export const dessertRecipes = {
         new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 25),
         new IngredientsInDishes(pokesleepIngredients["honey"], 17),
         ],
-        1.48
+        1.48006 //要検証(旧:1.48)
     ),
     "teatimeCornScones": new Recipe(
         "おちゃかいコーンスコーン", 
@@ -67,7 +67,7 @@ export const dessertRecipes = {
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 20),
             new IngredientsInDishes(pokesleepIngredients["greengrassCorn"], 18),
         ], 
-        1.48
+        1.48006 //要検証(旧:1.48)
     ),
     "leafTornadoSmoothie": new Recipe(
         "グラスミキサースムージー", 

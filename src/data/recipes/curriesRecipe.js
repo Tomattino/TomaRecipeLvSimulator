@@ -3,6 +3,28 @@ import { IngredientsInDishes } from "../../models/common/IngredientsInDishes.js"
 import { Recipe } from "../../models/common/Recipe.js";
 
 export const curryRecipes = {
+    "bounceCurryUdon": new Recipe(
+        "とびはねるカレーうどん", 
+        "/images/Recipe/Curries/bouncecurryudon.png", 
+        [
+            new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 39),
+            new IngredientsInDishes(pokesleepIngredients["tastyMushroom"], 31),
+            new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 22),
+            new IngredientsInDishes(pokesleepIngredients["beanSausage"], 20),
+        ], 
+        1.78 //要検証 1.77993～1.77999?
+    ),
+    "greengrassCurryBun": new Recipe(
+        "ワカクサカレーパン", 
+        "/images/Recipe/Curries/GreengrassCurryBun.png", 
+        [
+            new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 20),
+            new IngredientsInDishes(pokesleepIngredients["fieryHerb"], 20),
+            new IngredientsInDishes(pokesleepIngredients["greengrassSoybeans"], 8),
+            new IngredientsInDishes(pokesleepIngredients["pureOil"], 15),
+        ], 
+        1.48006 //要検証(旧:1.48)
+    ),
     "freshAvocadoGratin": new Recipe(
         "しんりょくアボカドグラタン", 
         "/images/Recipe/Curries/overgrowavocadogratin.png", 
@@ -45,7 +67,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["tastyMushroom"], 25),
             new IngredientsInDishes(pokesleepIngredients["pumpkin"], 10),
         ], 
-        1.48
+        1.48006 //要検証(旧:1.48)
     ),
     "infernoCornKeemaCurry": new Recipe(
         "れんごくコーンキーマカレー", 
@@ -56,7 +78,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 12),
             new IngredientsInDishes(pokesleepIngredients["greengrassCorn"], 14),
         ], 
-        1.48
+        1.48006 //要検証(旧:1.48)
     ),
     "ninjaCurry": new Recipe(
         "ニンジャカレー", 
@@ -67,7 +89,7 @@ export const curryRecipes = {
             new IngredientsInDishes(pokesleepIngredients["largeLeek"], 12),
             new IngredientsInDishes(pokesleepIngredients["tastyMushroom"], 5),
         ], 
-        1.48
+        1.48006 //要検証(旧:1.48)
     ),
     "dreamEaterButterCurry": new Recipe(
         "ぜったいねむりバターカレー", 
