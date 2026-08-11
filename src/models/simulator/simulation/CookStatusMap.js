@@ -109,4 +109,25 @@ export class CookStatusMap {
       this.clearExtraIngredients(cookIndex);
     });
   }
+
+  // ■登録中設定条件
+  /**	
+  * 設定条件を取得する
+  * 
+  **/
+  get allStatusMap(){
+    return this._map;
+  }
+
+  /**	
+  * 指定キーの追加食材をすべてクリアする
+  * 
+  * @param {object} mapData - 個別シミュレーション条件紐づけキー	
+  * 
+  **/
+  set allStatusMap(mapData){
+    this._map = mapData;
+  }
+
+
 }

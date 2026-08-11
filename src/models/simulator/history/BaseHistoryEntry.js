@@ -7,38 +7,38 @@
  * 
  ************************************/
 
+import { appConfig } from '../../../config/appConfig.js'
+
 export class BaseHistoryEntry {
     /**
    * @param {string} id - 一意のID
-   * @param {string} recipeName - 選択されているレシピ名
    * @param {RecipeLvSimulatorConfig} configSnapshot - レシピ、レベル下限上限、フィールドボーナス、イベントボーナス
-   * @param {boolean} cookStatusMap - 日曜日フラグ、大成功フラグ
+   * @param {object} cookStatusRawMap - 日曜日フラグ、大成功フラグ(※mapプロパティのみ)
    * @param {number[]} manualEnergyMap - 手入力エナジー
-   * @param {date} savedAt - 保存日時
+   * @param {Date} savedAt - 保存日時
+   * @param {number} version - 履歴機能バージョン(保存時)
    */
-  constructor({ id, recipeName, configSnapshot, cookStatusMap, manualEnergyMap , savedAt}) {
+  constructor({ id, configSnapshot, cookStatusRawMap, manualEnergyMap , savedAt, version}) {
     this.id = id;
-    this.recipeName = recipeName;
     this.configSnapshot = configSnapshot; 
-    this.cookStatusMap = cookStatusMap;
+    this.cookStatusRawMap = cookStatusRawMap;
     this.manualEnergyMap = manualEnergyMap;
     this.savedAt =  savedAt;
+    this.version = version;
   }
 
   /**
   *  履歴カード表示用の情報を作成する
   * 
   */
-  toHistoryDisplayString(){
-
-  }
+  toHistoryDisplayString(){}
 
   /**
   *  オブジェクトを保存用Jsonに変換
   * 
   */
   toSaveDataJSON(){
-
+    return JSON.stringify({...this, version: appConfig.historyStorage.version});
   }
 
   /**
@@ -48,8 +48,21 @@ export class BaseHistoryEntry {
   * 
   */
   static toObjectFromSaveDataJson(jsonData){
-    //TODO
+    const tmpJsonHistoryEntry = JSON.parse(jsonData);
 
+    if(!appConfig.historyStorage.supportedVersions.includes(tmpJsonHistoryEntry.version)){
+      return null;
+    }
+
+    return new BaseHistoryEntry({
+      id: tmpJsonHistoryEntry.id, 
+      recipeName:tmpJsonHistoryEntry.recipeName, 
+      configSnapshot: tmpJsonHistoryEntry.configSnapshot, 
+      cookStatusRawMap: tmpJsonHistoryEntry.cookStatusRawMap, 
+      manualEnergyMap: tmpJsonHistoryEntry.manualEnergyMap, 
+      savedAt: new Date(tmpJsonHistoryEntry.savedAt),
+      version: tmpJsonHistoryEntry.version, 
+    });
   }
 
 }
