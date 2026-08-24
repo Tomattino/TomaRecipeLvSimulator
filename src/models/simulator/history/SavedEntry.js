@@ -34,4 +34,20 @@ export class SavedEntry extends BaseHistoryEntry{
       actionBtnText: "読み込む",
     };
   }
+
+
+    /**
+    *  Jsonデータから本クラスのオブジェクトへ変換
+    * 
+    *  @param {string} jsonData - 保存されていたデータ等	
+    * 
+    */
+    static toObjectFromSaveDataJson(jsonData){
+      const baseSaveData = super.toObjectFromSaveDataJson(jsonData);
+      if (!baseSaveData) return null;
+  
+      const { historyName } = JSON.parse(jsonData);
+      return new SavedEntry({ historyName, ...baseSaveData });
+    
+    }
 }
