@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 
 /****  設定取り込み ****/
 import { appConfig } from '../config/appConfig.js'
+import { storageConfig } from '../config/storageConfig.js'
 
 /****  モデル取り込み ****/
 import { CurrentSession } from '../models/simulator/history/CurrentSession.js'
@@ -40,14 +41,27 @@ export const useHistoryStore = defineStore('history', () => {
 
   // ■ 現在のシミュレーター状態からスナップショットを作りcurrentSessionに保存
   const saveCurrentSession = () => {
-    currentSession.value = _createSnapshot("currentSession");
+    currentSession.value = _createSnapshot(storageConfig.HistoryStorageKey.CURRENT_SESSION);
     _writeToLocalStorage (currentSession.value); 
   };
 
   // ■ エントリをシミュレーターに書き戻す（読み込み前に現在状態を退避）
-  const loadEntry = (entry) => {
-    previousSession.value = _createSnapshot("previousSession");
+  const savePreviousSession = () => {
+    previousSession.value = _createSnapshot(storageConfig.HistoryStorageKey.PREVIOUS_SESSION);
     _writeToLocalStorage(previousSession.value); 
+  }
+
+
+  // ■ エントリの内容をシミュレーターに書き戻す（書き戻し前にsavePreviousSessionで現在状態を退避）
+  const loadEntry = (entry) => {
+    const { configSnapshot: loadedconfigSnapshot, 
+            cookStatusRawMap: loadedCookStatusRawMap, 
+            manualEnergyMap: loadedManualEnergyMap } = entry;
+
+    simulatorStore.config.restoreSnapshot(loadedconfigSnapshot);
+
+    simulatorStore.cookStatusMap.allStatusMap = loadedCookStatusRawMap;
+    simulatorStore.manualEnergyMap = loadedManualEnergyMap;
   };
 
   // ■ 現在状態を名前をつけてsavedEntriesに追加
@@ -72,12 +86,12 @@ export const useHistoryStore = defineStore('history', () => {
 
   // ■ localStorageから読み込む（起動時）
   const _readFromLocalStorage = () => {
-  // currentSession の復元
-    const tmpCurrentSession = localStorage.getItem("currentSession");
+    // currentSession の復元
+    const tmpCurrentSession = localStorage.getItem(storageConfig.HistoryStorageKey.CURRENT_SESSION);
     if (tmpCurrentSession) currentSession.value = CurrentSession.toObjectFromSaveDataJson(tmpCurrentSession);
 
     // previousSession の復元
-    const tmpPreviousSession = localStorage.getItem("previousSession");
+    const tmpPreviousSession = localStorage.getItem(storageConfig.HistoryStorageKey.PREVIOUS_SESSION);
     if (tmpPreviousSession) previousSession.value = CurrentSession.toObjectFromSaveDataJson(tmpPreviousSession);
 
     const tmpSavedEntries = [];
@@ -94,8 +108,8 @@ export const useHistoryStore = defineStore('history', () => {
 
   const _isSavedEntry = (key) => {
     let isSavedEntry = true;
-    if(key === "currentSession") isSavedEntry = false;
-    if(key === "previousSession") isSavedEntry = false;
+    if(key === storageConfig.HistoryStorageKey.CURRENT_SESSION) isSavedEntry = false;
+    if(key === storageConfig.HistoryStorageKey.PREVIOUS_SESSION) isSavedEntry = false;
 
     return isSavedEntry;
   }
@@ -108,6 +122,7 @@ export const useHistoryStore = defineStore('history', () => {
     previousSession,
     savedEntries,
     saveCurrentSession,
+    savePreviousSession,
     loadEntry,
     saveEntry,
     deleteEntry,
