@@ -6,7 +6,7 @@
  * 下記設定値を取り扱う
 ************************************/
 
-import { LevelRange } from "../value/LevelRange.js"; //レベル範囲格納用クラス
+import { LevelRange } from "../../value/LevelRange.js"; //レベル範囲格納用クラス
 
 
 export class RecipeLvSimulatorConfig {
@@ -128,6 +128,32 @@ export class RecipeLvSimulatorConfig {
   get hasError() {
     return !this._selectLvRange.isValid;
   }
+
+  /**
+  * 保存されたconfigSnapshotから設定を一括復元する
+  * (startLevelのsetterがexpForNextLvを自動計算する副作用を持つため、
+  *  必ずstartLevelを先に、expForNextLvを最後に設定する)
+  * @param {object} snapshot - configSnapshot形式のオブジェクト
+  * @param {number} snapshot.startLevel - シミュレーション開始レベル
+  * @param {number} snapshot.endLevel - シミュレーション目標レベル
+  * @param {number} snapshot.fieldBonus - フィールドボーナス
+  * @param {number} snapshot.eventBonus - イベントボーナス
+  * @param {number} snapshot.expForNextLv - 次のレベルまでに必要な経験値
+  * @param {string} snapshot.selectedRecipeName - 選択レシピ名称
+  */
+  restoreSnapshot({ startLevel, endLevel, fieldBonus, eventBonus, expForNextLv, selectedRecipeName }) {
+    //restore時上限下限のチェックに引っかかってしまうため事前に最小最大値を一時的に適用
+    this.startLevel = this.configMinLevel;
+    this.endLevel = this.configMaxLevel;
+
+    this.selectedRecipeName = selectedRecipeName;
+    this.startLevel = startLevel;
+    this.endLevel = endLevel;
+    this.fieldBonus = fieldBonus;
+    this.eventBonus = eventBonus;
+    this.expForNextLv = expForNextLv; // startLevelの後に上書きする
+  }
+
 
   // TODO: フィールドボーナスをパーセント表記で返すgetterを実装する(1.05 みたいな倍率をパーセント表記にする便利メソッドとか)
 }

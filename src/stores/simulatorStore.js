@@ -11,9 +11,9 @@ import { curryRecipes } from '../data/recipes/curriesRecipe.js' //カレー
 import { recipeLevelMaster } from '../data/recipeLevelMaster.js' //料理レベルマスタ
 
 //シミュレーション関係モデル
-import { RecipeLvSimulatorConfig } from '../models/simulator/RecipeLvSimulatorConfig.js' // シミュレータ設定
-import { RecipeLvSimulatorResultList } from '../models/simulator/RecipeLvSimulatorResultList.js' //料理シミュレーション結果
-import { CookStatusMap } from '../models/simulator/CookStatusMap.js' //料理結果 判定条件紐づけ用モデル
+import { RecipeLvSimulatorConfig } from '../models/simulator/simulation/RecipeLvSimulatorConfig.js' // シミュレータ設定
+import { RecipeLvSimulatorResultList } from '../models/simulator/simulation/RecipeLvSimulatorResultList.js' //料理シミュレーション結果
+import { CookStatusMap } from '../models/simulator/simulation/CookStatusMap.js' //料理結果 判定条件紐づけ用モデル
 
 
 
@@ -76,7 +76,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
         manualEnergyMap //手入力の料理エナジー
     });
   });
-  
+
   // ── actions: 操作（メソッドと同じ） ────────────────────────────
   //■カテゴリ変更時にカテゴリ内の最初の料理を表示
   watch(selectedCategory, () => {

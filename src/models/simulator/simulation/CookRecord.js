@@ -8,7 +8,7 @@
  *  そのため、このクラス自体に更新系のメソッドは持たない。
  ************************************/
 
-import { Dish } from '../common/Dish.js' //料理クラス
+import { Dish } from '../../common/Dish.js' //料理クラス
 
 
 export class CookRecord {
