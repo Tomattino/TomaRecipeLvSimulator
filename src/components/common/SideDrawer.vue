@@ -29,12 +29,16 @@
   .drw.closed { width: 0; border: none; }
   .tog { 
     position: absolute; 
-    top: 12px; 
-    right: 12px; 
-    font-size: 0.68rem; 
-    padding: 5px 10px; 
+    top: 6px;
+    right: 10px; 
+    font-size: 0.78rem;      
+    padding: 7px 14px;       
     cursor: pointer;
     z-index: 10;
+    background: #444;
+    border: 1px solid #666;
+    color: #aaa;
+    border-radius: 6px;      
   }
   .tog:hover { background: #4a4a4a; }
 

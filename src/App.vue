@@ -34,6 +34,7 @@
   .app-container {
     padding: 0;
     position: relative;
+    padding-top: 42px;   /* ボタン用のスペースを常に上に確保 */
   }
   .app-footer {
     font-size: 0.75rem;
