@@ -1,18 +1,25 @@
 <script setup>
   const props = defineProps({
     sectionTitle: {type: String, required: true},
+    sticky: { type: Boolean, required: false, default: false },
   });
 </script>
 
 
 <template>
-  <div class="bar-divider">{{sectionTitle}}</div>
+  <div class="bar-divider"  :class="{ sticky: sticky }">{{sectionTitle}}</div>
   <div class="session-card">
     <slot />
   </div>
 </template>
 
 <style scoped>
+  .bar-divider.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
   .bar-divider {
     background: #2e2e2e;
     border-top: 1px solid #444;

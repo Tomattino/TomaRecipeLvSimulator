@@ -2,31 +2,27 @@
   import { computed } from 'vue';
 
   const props = defineProps({
-    badgeTitle: {type: String, required: false, default: ""},
-    historyName : {type: String, required: false, default: ""},
-    recipeName: {type: String, required: true},
-    levelFrom : {type: Number, required: true},
-    levelTo : {type: Number, required: true},
-    fieldBonus: {type: Number, required: true},
-    regDateTime: {type: Date, required: true},
-    actionBtnText: {type: String, required: false, default: ""},
+    badgeTitle: { type: String, required: false, default: "" },
+    entry: {type: Object,required: true}, // CurrentSession or SavedEntry 
+    deletable: {type: Boolean, required: false, default: false},
   });
 
-  const formattedDate = computed(() => {
-    return props.regDateTime.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
-  })
+  const display = computed(() => props.entry?.toHistoryDisplayString());
+  const emit = defineEmits(['load', 'delete']);
 </script>
 
 <template>
   <div class="ent">
     <div class="ent-top">
       <span class="badge cur" v-if="badgeTitle">{{badgeTitle}}</span>
-      <div class="ename" v-if="historyName">{{historyName}}</div>
+      <div class="ename" v-if="display.historyName">{{display.historyName}}</div>
     </div>
-    <div class="erecipe">{{recipeName}}</div>
-    <div class="emeta">Lv{{levelFrom}}→{{levelTo}} ／ FB{{fieldBonus}}% ／ {{formattedDate}}</div>
-    <div class="acts" v-if="actionBtnText">
-        <button class="load">{{actionBtnText}}</button>
+    <div class="erecipe">{{display.recipeName}}</div>
+    <div class="emeta">Lv{{display.levelFrom}}→{{display.levelTo}} ／ 次のレベルまで{{display.expForNextLv }}</div>
+    <div class="emeta"> FB{{display.fieldBonus}}% ／ イベント×{{display.eventBonus}} ／ {{display.regDateTime}}</div>
+    <div class="acts" v-if="display.actionBtnText">
+        <button class="load"  @click="emit('load')">{{display.actionBtnText}}</button>
+        <button class="del" v-if="deletable" @click="emit('delete')">🗑</button>
     </div>
   </div>
 </template>

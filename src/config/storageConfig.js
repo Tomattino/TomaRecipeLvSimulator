@@ -9,5 +9,6 @@ export const storageConfig = Object.freeze({
   HistoryStorageKey: {
     CURRENT_SESSION: 'tomaRecipeSimu:currentSession',
     PREVIOUS_SESSION: 'tomaRecipeSimu:previousSession',
+    SAVE_TEST: 'tomaRecipeSimu:__saveTest__',
   }
 });

@@ -76,7 +76,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
         manualEnergyMap //手入力の料理エナジー
     });
   });
-  
+
   // ── actions: 操作（メソッドと同じ） ────────────────────────────
   //■カテゴリ変更時にカテゴリ内の最初の料理を表示
   watch(selectedCategory, () => {

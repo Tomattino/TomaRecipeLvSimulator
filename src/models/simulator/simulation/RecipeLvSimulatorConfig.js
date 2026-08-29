@@ -142,6 +142,10 @@ export class RecipeLvSimulatorConfig {
   * @param {string} snapshot.selectedRecipeName - 選択レシピ名称
   */
   restoreSnapshot({ startLevel, endLevel, fieldBonus, eventBonus, expForNextLv, selectedRecipeName }) {
+    //restore時上限下限のチェックに引っかかってしまうため事前に最小最大値を一時的に適用
+    this.startLevel = this.configMinLevel;
+    this.endLevel = this.configMaxLevel;
+
     this.selectedRecipeName = selectedRecipeName;
     this.startLevel = startLevel;
     this.endLevel = endLevel;

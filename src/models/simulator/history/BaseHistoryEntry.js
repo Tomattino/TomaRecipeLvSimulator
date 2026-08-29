@@ -31,7 +31,19 @@ export class BaseHistoryEntry {
   *  履歴カード表示用の情報を作成する
   * 
   */
-  toHistoryDisplayString(){}
+  toHistoryDisplayString(){
+    return {
+      historyName: "",
+      recipeName: this.configSnapshot.selectedRecipeName,
+      levelFrom: this.configSnapshot.startLevel,
+      levelTo: this.configSnapshot.endLevel,
+      fieldBonus: Math.round((this.configSnapshot.fieldBonus - 1) * 100),
+      eventBonus: this.configSnapshot.eventBonus,
+      expForNextLv: this.configSnapshot.expForNextLv,
+      regDateTime:  this.savedAt.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+      actionBtnText: "読み込む",
+    };
+  }
 
   /**
   *  オブジェクトを保存用Jsonに変換
@@ -48,7 +60,12 @@ export class BaseHistoryEntry {
   * 
   */
   static toObjectFromSaveDataJson(jsonData){
-    const tmpJsonHistoryEntry = JSON.parse(jsonData);
+    let tmpJsonHistoryEntry;
+    try {
+      tmpJsonHistoryEntry = JSON.parse(jsonData);
+    } catch {
+      return null; 
+    }
 
     if(!appConfig.historyStorage.supportedVersions.includes(tmpJsonHistoryEntry.version)){
       return null;

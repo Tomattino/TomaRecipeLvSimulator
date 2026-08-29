@@ -24,15 +24,7 @@ export class SavedEntry extends BaseHistoryEntry{
   * 
   */
   toHistoryDisplayString(){
-    return {
-      historyName: this.historyName,
-      recipeName: this.configSnapshot.selectedRecipeName,
-      levelFrom: this.configSnapshot.startLevel,
-      levelTo: this.configSnapshot.endLevel,
-      fieldBonus: this.configSnapshot.fieldBonus,
-      regDateTime: this.savedAt,
-      actionBtnText: "読み込む",
-    };
+    return {...super.toHistoryDisplayString(), historyName: this.historyName}
   }
 
 

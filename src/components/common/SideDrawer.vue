@@ -16,11 +16,11 @@
 
 <style scoped>
   .drw {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
-    width: 242px;
-    height: 100%;
+    width: 262px;
+    height: 100vh;
     background: #252525;
     border-left: 1px solid #555;
     overflow: hidden;
