@@ -85,7 +85,7 @@ export const useHistoryStore = defineStore('history', () => {
 
   // ■ 現在状態を名前をつけてsavedEntriesに追加
   const saveEntry = (historyName) => {
-    const newID = crypto.randomUUID();
+    const newID = `${storageConfig.HistoryStorageKey.SAVED_PREFIX}${crypto.randomUUID()}`;
     const tmpSaveEntry = new SavedEntry({historyName, ..._createSnapshot(newID)});
     _writeToLocalStorage(tmpSaveEntry); 
     _readFromLocalStorage();
@@ -140,7 +140,10 @@ export const useHistoryStore = defineStore('history', () => {
 
       if(_isSavedEntry(tmpSavedkey)){
         const tmpSavedJson = localStorage.getItem(tmpSavedkey);
-        if (tmpSavedJson) tmpSavedEntries.push(SavedEntry.toObjectFromSaveDataJson(tmpSavedJson));
+        if (tmpSavedJson) {
+          const tmpEntry = SavedEntry.toObjectFromSaveDataJson(tmpSavedJson);
+          if (tmpEntry) tmpSavedEntries.push(tmpEntry);
+        }
       }
     }
 
@@ -149,11 +152,7 @@ export const useHistoryStore = defineStore('history', () => {
   };
 
   const _isSavedEntry = (key) => {
-    let isSavedEntry = true;
-    if(key === storageConfig.HistoryStorageKey.CURRENT_SESSION) isSavedEntry = false;
-    if(key === storageConfig.HistoryStorageKey.PREVIOUS_SESSION) isSavedEntry = false;
-
-    return isSavedEntry;
+    return key.startsWith(storageConfig.HistoryStorageKey.SAVED_PREFIX);
   }
 
   // 起動時に localStorage から状態を復元
