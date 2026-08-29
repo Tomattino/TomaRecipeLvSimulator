@@ -80,7 +80,7 @@ export const useHistoryStore = defineStore('history', () => {
     simulatorStore.config.restoreSnapshot(loadedconfigSnapshot);
 
     simulatorStore.cookStatusMap.allStatusMap = loadedCookStatusRawMap;
-    simulatorStore.manualEnergyMap = loadedManualEnergyMap;
+    simulatorStore.restoreManualEnergyMap(loadedManualEnergyMap);
   };
 
   // ■ 現在状態を名前をつけてsavedEntriesに追加

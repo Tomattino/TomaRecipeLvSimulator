@@ -121,6 +121,13 @@ export const useSimulatorStore = defineStore('simulator', () => {
     delete manualEnergyMap[cookIndex];
   }
 
+  // ■手入力エナジーの一括復元（履歴読み込み用）
+  const restoreManualEnergyMap = (newMap) => {
+    Object.keys(manualEnergyMap).forEach(key => delete manualEnergyMap[key]);
+    Object.assign(manualEnergyMap, newMap);
+  }
+
+
   // コンポーネントで使用する変数
   return {
     // ------ シミュレーション設定 ------
@@ -152,6 +159,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
     clearExtraIngredients,
     setManualEnergy,
     clearManualEnergy,
+    restoreManualEnergyMap,
   }
 
 })
