@@ -55,6 +55,12 @@
     <div class="result-list">
         <!-- 全体合計 結果 -->
         <div class="total-banner">
+            <div class="total-banner-header">
+              <button class="btn-reset" @click="handleResetAll">
+                追加食材を一括リセット
+              </button>
+            </div>
+            
             <div class="total-label">合計調理回数</div>
               <div class="total-count">
                 {{ store.results?.totalCookCount ?? 0 }}<span class="total-unit">回</span>
@@ -70,10 +76,6 @@
               :totalDishCoutnt="store.results.totalCookCount"
               :totalExtraIngredients="totalExtraIngredients"
             />
-            
-            <button class="btn-reset" @click="handleResetAll">
-              追加食材を一括リセット
-            </button>
         </div>
 
         <!-- レベルごとの結果リスト -->
@@ -96,6 +98,11 @@
       flex-direction: column;
       gap: 10px;
       color: white;
+  }
+  .total-banner-header {
+      display: flex;
+      justify-content: flex-end;  /* 右寄せ */
+      margin-bottom: 8px;
   }
   .total-banner {
       position: relative; 
@@ -128,15 +135,11 @@
     letter-spacing: 0.05em;
   }
   .btn-reset {
-    position: absolute;
-    top: 0;
-    right: 0;
     font-size: 0.7rem;
     padding: 4px 8px;
     border: 1px solid rgba(255,152,0,0.5);
     background: rgba(255,152,0,0.1);
     color: rgba(255,152,0,0.9);
-  
   }
   .btn-reset:hover { background: rgba(255,252,0,0.25); }
 </style>
