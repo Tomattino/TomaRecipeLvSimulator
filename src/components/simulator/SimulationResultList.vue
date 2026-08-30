@@ -1,5 +1,5 @@
 <script setup>
-  import { computed } from 'vue'
+  import { ref, computed } from 'vue'
 
   /****  コンポーネント取り込み ****/  
   import LevelResultBlock from './LevelResultBlock.vue' //レベルごとの結果
@@ -48,6 +48,13 @@
     }
   }
 
+  const hideZeroCount = ref(false);
+  const visibleLevels = computed(() => {
+    const levelsResults = store.results?.dishLevelsResults ?? [];
+    return hideZeroCount.value
+      ? levelsResults.filter(res => res.count > 0)
+      : levelsResults;
+  });
 
 </script>
 
@@ -76,11 +83,15 @@
               :totalDishCoutnt="store.results.totalCookCount"
               :totalExtraIngredients="totalExtraIngredients"
             />
+
+            <label class="hide-zero-toggle">
+              <input type="checkbox" v-model="hideZeroCount" />0回の結果を省略する
+            </label>
         </div>
 
         <!-- レベルごとの結果リスト -->
         <LevelResultBlock
-            v-for="res in store.results?.dishLevelsResults "
+            v-for="res in visibleLevels "
             :key="res.level"
             :res="res"
         />
@@ -142,4 +153,22 @@
     color: rgba(255,152,0,0.9);
   }
   .btn-reset:hover { background: rgba(255,252,0,0.25); }
+
+  .hide-zero-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    width: fit-content;      
+    margin-left: auto;       
+    margin-top: 12px;       
+  }
+  .hide-zero-toggle input[type="checkbox"] {
+    accent-color: #3498db;  
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
 </style>
