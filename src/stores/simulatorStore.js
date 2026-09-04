@@ -15,7 +15,7 @@ import { RecipeLvSimulatorConfig } from '../models/simulator/simulation/RecipeLv
 import { RecipeLvSimulatorResultList } from '../models/simulator/simulation/RecipeLvSimulatorResultList.js' //料理シミュレーション結果
 import { CookStatusMap } from '../models/simulator/simulation/CookStatusMap.js' //料理結果 判定条件紐づけ用モデル
 
-
+import { WeekScheduleSetting } from '../models/simulator/weekSchedule/WeekScheduleSetting.js'
 
 
 export const useSimulatorStore = defineStore('simulator', () => {
@@ -23,7 +23,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
   const config = reactive(new RecipeLvSimulatorConfig(recipeLevelMaster)); // シミュレータ設定
   const selectedCategory = ref('curry'); // 選択カテゴリの初期値
   const cookStatusMap = reactive(new CookStatusMap()); //シミュレーション関係モデル
-  const manualEnergyMap = reactive({});
+  const manualEnergyMap = reactive({}); //手入力エナジー
+  const weekScheduleSetting = reactive(new WeekScheduleSetting());
 
   // 初期カテゴリに合わせて初期表示レシピを設定
   const initialRecipes = {
@@ -39,7 +40,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // 追加食材編集モーダルで編集中のキーを格納(null=モーダル閉じてる、数値=編集中のcookIndex)
   const activeEditCookIndex = ref(null);
 
-
+  // 有効曜日設定モーダル開閉
+  const isWeekScheduleModalOpen  = ref(false);
 
   // ── getters: 計算値（computed と同じ） ────────────────────────────
   //■料理カテゴリの変更
@@ -93,6 +95,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
   const toggleSunday = (cookIndex) => cookStatusMap.toggleSunday(cookIndex); //日曜日フラグ
   const toggleCritical = (cookIndex) => cookStatusMap.toggleCritical(cookIndex); //大成功フラグ
   
+  /**** 追加食材関係 *****/
   // ■追加食材入力関係
   const setExtraQty = (cookIndex, ingKey, qty) => cookStatusMap.setExtraQty(cookIndex, ingKey, qty); //追加食材個数を増やす
   const adjustExtraQty = (cookIndex, ingKey, delta) => cookStatusMap.adjustExtraQty(cookIndex, ingKey, delta); //追加食材数増減
@@ -109,8 +112,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
   //全追加食材リセット
   const clearAllExtraIngredients = () => cookStatusMap.clearAllExtraIngredients();
 
-
-  // ■手入力エナジー
+  /**** 手入力エナジー *****/
   // 追加
   const setManualEnergy = (cookIndex, val) => {
     if(typeof val !== 'number' || val < 0) return;
@@ -126,6 +128,20 @@ export const useSimulatorStore = defineStore('simulator', () => {
     Object.keys(manualEnergyMap).forEach(key => delete manualEnergyMap[key]);
     Object.assign(manualEnergyMap, newMap);
   }
+
+  /**** 曜日設定 *****/
+  // ■リセット（全部有効に戻す）
+  const resetWeekScheduleSetting  = () => {
+    weekScheduleSetting.reset();
+  };
+
+  // モーダル開閉
+  const openWeekScheduleModal  = () => isWeekScheduleModalOpen.value = true;
+  const closeWeekScheduleModal  = () => isWeekScheduleModalOpen.value = false;
+
+
+
+
 
 
   // コンポーネントで使用する変数
@@ -146,6 +162,10 @@ export const useSimulatorStore = defineStore('simulator', () => {
     // ------ 追加食材モーダル ------
     activeEditCookIndex,
 
+    // ------ 週間スケジュール表示設定 ------
+    weekScheduleSetting,
+    isWeekScheduleModalOpen,
+    
     // ------ アクション(各動きは上記参照)  ------    
     setExpForNextLv,
     toggleSunday,
@@ -160,6 +180,10 @@ export const useSimulatorStore = defineStore('simulator', () => {
     setManualEnergy,
     clearManualEnergy,
     restoreManualEnergyMap,
+
+    resetWeekScheduleSetting,
+    openWeekScheduleModal,
+    closeWeekScheduleModal ,
   }
 
 })
