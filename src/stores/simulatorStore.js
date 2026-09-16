@@ -128,6 +128,14 @@ export const useSimulatorStore = defineStore('simulator', () => {
   }
 
 
+  // ■レシピ名から、それがどのカテゴリに属するか逆引きする
+  const findCategoryByRecipeName = (recipeName) => {
+      return Object.keys(initialRecipes).find(category =>
+          Object.values(initialRecipes[category]).some(masterRecipe => masterRecipe.name === recipeName)
+      );
+  };
+
+
   // コンポーネントで使用する変数
   return {
     // ------ シミュレーション設定 ------
@@ -160,6 +168,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
     setManualEnergy,
     clearManualEnergy,
     restoreManualEnergyMap,
+    findCategoryByRecipeName,
   }
 
 })
