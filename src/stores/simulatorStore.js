@@ -147,9 +147,6 @@ export const useSimulatorStore = defineStore('simulator', () => {
 
 
 
-
-
-
   // ■レシピ名から、それがどのカテゴリに属するか逆引きする
   const findCategoryByRecipeName = (recipeName) => {
       return Object.keys(initialRecipes).find(category =>
