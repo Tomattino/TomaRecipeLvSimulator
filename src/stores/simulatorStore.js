@@ -80,7 +80,13 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // ── actions: 操作（メソッドと同じ） ────────────────────────────
   //■カテゴリ変更時にカテゴリ内の最初の料理を表示
   watch(selectedCategory, () => {
-      config.selectedRecipeName = Object.values(currentRecipes.value)[0]?.name ?? '';
+    //履歴ロード時にカテゴリが違う場合にレシピが1つめのレシピになってしまうため事前にリスト内に存在するか確認
+    const list = Object.values(currentRecipes.value ?? {});
+    const exists = list.some(listRecipe => listRecipe.name === config.selectedRecipeName);
+
+    if(!exists){
+      config.selectedRecipeName = list[0]?.name ?? '';
+    }
   });
 
   // ■ 余剰経験値算出
