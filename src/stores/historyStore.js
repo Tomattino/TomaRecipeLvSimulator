@@ -40,7 +40,7 @@ export const useHistoryStore = defineStore('history', () => {
 
   const _createSnapshot = (id) => {
     return new CurrentSession({
-      id: id ,
+      id: id,
       configSnapshot: {
           startLevel: simulatorStore.config.startLevel,
           endLevel: simulatorStore.config.endLevel,
@@ -76,9 +76,12 @@ export const useHistoryStore = defineStore('history', () => {
     const { configSnapshot: loadedconfigSnapshot, 
             cookStatusRawMap: loadedCookStatusRawMap, 
             manualEnergyMap: loadedManualEnergyMap } = entry;
+    
+    const foundCategory = simulatorStore.findCategoryByRecipeName(loadedconfigSnapshot.selectedRecipeName);
+    if (foundCategory) simulatorStore.selectedCategory = foundCategory;
 
     simulatorStore.config.restoreSnapshot(loadedconfigSnapshot);
-
+    
     simulatorStore.cookStatusMap.allStatusMap = loadedCookStatusRawMap;
     simulatorStore.restoreManualEnergyMap(loadedManualEnergyMap);
   };
