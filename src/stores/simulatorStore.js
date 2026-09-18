@@ -91,6 +91,13 @@ export const useSimulatorStore = defineStore('simulator', () => {
     }
   });
 
+  // ■レシピ名から、それがどのカテゴリに属するか逆引きする
+  const findCategoryByRecipeName = (recipeName) => {
+      return Object.keys(initialRecipes).find(category =>
+          Object.values(initialRecipes[category]).some(masterRecipe => masterRecipe.name === recipeName)
+      );
+  };
+
   // ■ 余剰経験値算出
   // 必要経験値更新時に値の取得および余剰経験値および初期経験値を計算する
   const setExpForNextLv = (val) => {
@@ -141,18 +148,12 @@ export const useSimulatorStore = defineStore('simulator', () => {
     weekScheduleSetting.reset();
   };
 
-  // モーダル開閉
+  // ■モーダル開閉
   const openWeekScheduleModal  = () => isWeekScheduleModalOpen.value = true;
   const closeWeekScheduleModal  = () => isWeekScheduleModalOpen.value = false;
 
 
 
-  // ■レシピ名から、それがどのカテゴリに属するか逆引きする
-  const findCategoryByRecipeName = (recipeName) => {
-      return Object.keys(initialRecipes).find(category =>
-          Object.values(initialRecipes[category]).some(masterRecipe => masterRecipe.name === recipeName)
-      );
-  };
 
 
   // コンポーネントで使用する変数

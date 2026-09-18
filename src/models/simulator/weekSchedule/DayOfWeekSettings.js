@@ -11,10 +11,12 @@ export class DayOfWeekSetting {
   /**
   * @param {String} key - 曜日識別用文字列
   * @param {String} displayStr - 曜日表示用文字列
+  * @param {String} iconColor - 曜日表示用色
   */
-  constructor(key, displayStr){
+  constructor(key, displayStr, iconColor){
     this.key = key;
     this.displayStr = displayStr;
+    this.iconColor = iconColor;
 
     // 食事タイミングごとの設定を管理するオブジェクト群
     this.mealSlots = [

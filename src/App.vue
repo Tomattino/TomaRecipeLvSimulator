@@ -11,6 +11,10 @@
   //履歴表示用コンポーネント
   import HistoryDrawer from './components/simulator/history/HistoryDrawer.vue';
   
+  //曜日設定用モーダル
+  import WeekdaySettingsModal from './components/simulator/WeekdaySettingsModal.vue'  // 曜日設定モーダル
+
+
   //** 開発用 **/
   const isDev = import.meta.env.DEV
 </script>
@@ -20,6 +24,7 @@
     <SimulationHeader />
     <SimulationResultList />
     <ExtraIngModal/>
+    <WeekdaySettingsModal/>
     
     <HistoryDrawer />
     
