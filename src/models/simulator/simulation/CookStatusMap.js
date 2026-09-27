@@ -129,5 +129,24 @@ export class CookStatusMap {
     this._map = mapData;
   }
 
+  /**	
+  * 保存してあるスナップショットを書き戻す
+  * 
+  * @param {object} mapData - 個別シミュレーション条件紐づけキー	
+  * 
+  **/
+  restoreSnapshot(mapData) {
+    this._map = JSON.parse(JSON.stringify(mapData));
+  }
+  
+
+  /**	
+  * 保存用のスナップショットを作る
+  * 
+  **/
+  toSnapshotObjectForSaveData() {
+      return JSON.parse(JSON.stringify(this._map));
+  }
+
 
 }

@@ -9,7 +9,7 @@ import { storageConfig } from '../config/storageConfig.js'
 import { CurrentSession } from '../models/simulator/history/CurrentSession.js'
 import { SavedEntry } from '../models/simulator/history/SavedEntry.js'
 import { useSimulatorStore } from './simulatorStore.js'
-
+import { WeekScheduleSetting } from '../models/simulator/weekSchedule/WeekScheduleSetting.js'
 
 export const useHistoryStore = defineStore('history', () => {
   const simulatorStore = useSimulatorStore();
@@ -49,8 +49,9 @@ export const useHistoryStore = defineStore('history', () => {
           expForNextLv: simulatorStore.config.expForNextLv,
           selectedRecipeName: simulatorStore.config.selectedRecipeName,
       },
-      cookStatusRawMap: {...simulatorStore.cookStatusMap.allStatusMap},
+      cookStatusRawMap: simulatorStore.cookStatusMap.toSnapshotObjectForSaveData(),
       manualEnergyMap: {...simulatorStore.manualEnergyMap},
+      weekScheduleSetting: simulatorStore.weekScheduleSetting.toSnapshotObjectForSaveData(),
       savedAt: new Date(),
       version: appConfig.historyStorage.version,
     });
@@ -75,14 +76,17 @@ export const useHistoryStore = defineStore('history', () => {
 
     const { configSnapshot: loadedconfigSnapshot, 
             cookStatusRawMap: loadedCookStatusRawMap, 
-            manualEnergyMap: loadedManualEnergyMap } = entry;
+            manualEnergyMap: loadedManualEnergyMap,
+            weekScheduleSetting: loadedWeekScheduleSetting, } = entry;
     
     const foundCategory = simulatorStore.findCategoryByRecipeName(loadedconfigSnapshot.selectedRecipeName);
     if (foundCategory) simulatorStore.selectedCategory = foundCategory;
 
     simulatorStore.config.restoreSnapshot(loadedconfigSnapshot);
+
+    simulatorStore.weekScheduleSetting.restoreSnapshot(loadedWeekScheduleSetting ?? new WeekScheduleSetting());
     
-    simulatorStore.cookStatusMap.allStatusMap = loadedCookStatusRawMap;
+    simulatorStore.cookStatusMap.restoreSnapshot(loadedCookStatusRawMap);
     simulatorStore.restoreManualEnergyMap(loadedManualEnergyMap);
   };
 

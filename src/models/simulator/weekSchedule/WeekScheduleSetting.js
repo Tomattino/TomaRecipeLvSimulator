@@ -49,4 +49,45 @@ export class WeekScheduleSetting{
     reset(){
         this.weekSchedule.forEach(dayOfWeek => { dayOfWeek.reset(); })
     }
+
+
+
+  /**
+  * 保存されたSnapshotから曜日設定を復元する
+  * @param {object} startWeekOfDayKey - configSnapshot形式のオブジェクト
+  * @param {number} showWeekOfDayLabel - シミュレーション開始レベル
+  * @param {number} weekSchedule - シミュレーション目標レベル
+  * 
+  */
+  restoreSnapshot({ startWeekOfDayKey, showWeekOfDayLabel, weekSchedule, }) {
+    this.startWeekOfDayKey = startWeekOfDayKey; 
+    this.showWeekOfDayLabel = showWeekOfDayLabel; 
+    
+    weekSchedule.forEach(savedDay => {
+      const targetDay = this.weekSchedule.find(day => day.key === savedDay.key);
+      if (!targetDay) return;
+
+      savedDay.mealSlots.forEach(savedSlot => {
+        const targetSlot = targetDay.mealSlots.find(slot => slot.key === savedSlot.key);
+        //ユーザが操作可能なもののみ書き戻し
+        if (targetSlot) targetSlot.enabled = savedSlot.enabled;
+      });
+    });
+  }
+
+  /**
+  *  保存用のスナップショットを作る(ユーザーが変更できる値だけを、本体と切り離して取り出す)
+  */
+  toSnapshotObjectForSaveData() {
+    return {
+      startWeekOfDayKey: this.startWeekOfDayKey,
+      showWeekOfDayLabel: this.showWeekOfDayLabel,
+      
+      weekSchedule: this.weekSchedule.map(day => ({
+          key: day.key,
+          mealSlots: day.mealSlots.map(slot => ({ key: slot.key, enabled: slot.enabled })),
+      })),
+    };
+  }
+
 }
