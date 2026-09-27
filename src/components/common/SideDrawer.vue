@@ -7,6 +7,7 @@
 
 <template>
   <button class="tog" v-if="!isOpen" @click="isOpen = !isOpen">📋 履歴 ›</button>
+  <div v-if="isOpen" class="drw-backdrop" @click="isOpen = false"></div>
   <div class="drw"  :class="{ closed: !isOpen }">
     <button v-if="isOpen" class="close-btn" @click="isOpen = !isOpen">✕</button>
     <slot/>
@@ -15,6 +16,12 @@
 </template>
 
 <style scoped>
+  .drw-backdrop {
+    position: fixed;
+    inset: 0;                      
+    background: rgba(0,0,0,0.3);   
+    z-index: 50;
+  }
   .drw {
     position: fixed;
     right: 0;
@@ -25,6 +32,7 @@
     border-left: 1px solid #555;
     overflow: hidden;
     transition: width 0.3s ease;
+    z-index: 51; 
   }
   .drw.closed { width: 0; border: none; }
   .tog { 
