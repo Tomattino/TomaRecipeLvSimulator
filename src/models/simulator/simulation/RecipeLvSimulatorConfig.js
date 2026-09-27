@@ -27,8 +27,8 @@ export class RecipeLvSimulatorConfig {
     this.selectedRecipeName = ''; //選択レシピ名称
     
     //■倍率関係
-    this.fieldBonus = 1.0; //フィールドボーナス(直接呼出し)
-    this.eventBonus = 1.0; //イベントボーナス(直接呼出し)
+    this._fieldBonus = 1.0; //フィールドボーナス
+    this._eventBonus = 1.0; //イベントボーナス
   }
 
 
@@ -96,7 +96,28 @@ export class RecipeLvSimulatorConfig {
 
   get endLevel() { return this._selectLvRange.maxNum; }
 
+  // fieldBonus(フィールドボーナス) ─────────────────
+  /**
+   * @param {number} val - フィールドボーナス倍率(1.0 = ボーナスなし)
+   */
+  set fieldBonus(val) {
+      const num = Number(val);
+      if (!(num >= 1.0)) return; // 履歴から空が来た場合等にそなえNaN対策(履歴側で対応するほうがよい可能性があるが値が散るのでここで対応)
+      this._fieldBonus = num;
+  }
+  get fieldBonus() { return this._fieldBonus; }
 
+
+  // eventBonus(イベントボーナス) ─────────────────
+  /**
+   * @param {number} val - イベントボーナス倍率(1.0 = ボーナスなし)
+   */
+  set eventBonus(val) {
+      const num = Number(val);
+      if (!(num > 0)) return; // 履歴から空が来た場合等にそなえNaN対策(履歴側で対応するほうがよい可能性があるが値が散るのでここで対応)
+      this._eventBonus = num;
+  }
+  get eventBonus() { return this._eventBonus; }
 
   //** 経験値関係 **/
   // expForNextLv(必要経験値) ───────────────────
