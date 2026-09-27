@@ -62,6 +62,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
   //■ 料理レベルシミュレーション計算結果
   const results = computed(() => {
     if (!targetRecipe.value) return null;
+    if (!(config.fieldBonus >= 1.0)) return null;
+    if (!(config.eventBonus > 0)) return null;
 
     // 依存関係明示用(更新もれの防止)
     const _start = config.startLevel; //開始レベル
