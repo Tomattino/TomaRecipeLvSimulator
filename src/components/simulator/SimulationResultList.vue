@@ -5,7 +5,6 @@
   import LevelResultBlock from './LevelResultBlock.vue' //レベルごとの結果
   import TotalIngredientsSummary from './TotalIngredientsSummary.vue'; //全レベル通して必要になる食材数
 
-
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
   const store = useSimulatorStore();
@@ -63,6 +62,9 @@
         <!-- 全体合計 結果 -->
         <div class="total-banner">
             <div class="total-banner-header">
+              <button class="btn-reset" @click="store.openWeekScheduleModal()">
+                曜日設定
+              </button>
               <button class="btn-reset" @click="handleResetAll">
                 追加食材を一括リセット
               </button>

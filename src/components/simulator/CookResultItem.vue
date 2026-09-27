@@ -1,6 +1,6 @@
 <script setup>
   /****  コンポーネント取り込み ****/
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
@@ -25,50 +25,68 @@
   }
   //TODO共通化
   const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
+
+  // ■このcookIndexに対応する曜日マークを取得（曜日設定が反映されてる範囲内かつ表示ONの時だけ）
+  const weekdayMark = computed(() => {
+    if (!store.weekScheduleSetting.showWeekOfDayLabel) return null;
+  
+    const entry = store.weekScheduleSetting.enabledMealSlots[props.cook.cookIndex];
+    if (!entry) return null; // 曜日パターンを使い切った範囲は表示なし
+  
+    const day = store.weekScheduleSetting.weekSchedule.find(d => d.key === entry.dayOfWeek);
+    const slot = day?.mealSlots.find(s => s.key === entry.mealSlot);
+    if (!day || !slot) return null;
+  
+    return `${day.displayStr}${slot.icon}`;
+  });
+
 </script>
 
 <template>
-    <div class="cook-item" :class="{ 'is-critical': cook.isCritical }">
-        <div class="cook-header">
-            <!-- 結果表示 -->
-            <span class="cook-num">{{ localIndex }} 回目</span>
-            <span class="energy" :class="{ 'is-critical-text': cook.isCritical }">
-                <!-- 表示モード -->
-                <div v-if ="!editMode">
-                  <!-- 計算値 -->
-                  <div v-if="store.manualEnergyMap[cook.cookIndex] === undefined" >
-                    {{ cook.finalEnergy.toLocaleString() }} エナジー 
-                    <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
-                  </div>
-                  <div v-else >
-                    {{ store.manualEnergyMap[cook.cookIndex].toLocaleString() }} エナジー
-                    <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
-                    <div class="icon-btn"  @click.stop="store.clearManualEnergy(cook.cookIndex)" >🗑</div>
-                    <span class="manual-badge">手入力</span>
-                  </div>
-                </div>
-                <!-- 入力モード -->
-                <div v-else>
-                  <input type="number" v-model="manualInputVal" @keydown.enter="handleSave">
-                  <div class="icon-btn" @click.stop="handleSave">✅</div>
-                  <div class="icon-btn" @click.stop="editMode = false">×</div>
-                </div>
-
-            </span> 
-
-            <!-- 条件設定 -->
-            <div class="cook-actions">
-                <button @click.stop="store.openIngModal(cook.cookIndex)" class="action-btn">追加食材編集</button>
-                <button @click.stop="store.toggleSunday(cook.cookIndex)"
-                    :class="['action-btn', 'sunday-btn', { active: cook.isSunday }]">☀ 日曜</button>
-                <button @click.stop="store.toggleCritical(cook.cookIndex)"
-                    :class="['action-btn', 'critical-btn', { active: cook.isCritical }]">🍲 大成功</button>
-                <span v-if="cook.isCritical" class="multiplier">
-                    {{ cook.isSunday ? '×3' : '×2' }}
-                </span>
-            </div> <!-- 条件設定 -->
+  <div class="cook-item" :class="{ 'is-critical': cook.isCritical }">
+    <div class="cook-header">
+      <!-- 結果表示 -->
+      <div class="cook-num-row">
+        <span class="cook-num">{{ localIndex }} 回目</span>
+        <span v-if="weekdayMark" class="weekday-mark">{{ weekdayMark }}</span>
+      </div>
+      <span class="energy" :class="{ 'is-critical-text': cook.isCritical }">
+        <!-- 表示モード -->
+        <div v-if ="!editMode">
+          <!-- 計算値 -->
+          <div v-if="store.manualEnergyMap[cook.cookIndex] === undefined" >
+            {{ cook.finalEnergy.toLocaleString() }} エナジー 
+            <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
+          </div>
+          <div v-else >
+            {{ store.manualEnergyMap[cook.cookIndex].toLocaleString() }} エナジー
+            <div class="icon-btn" @click.stop="editMode = true"> ✏️ </div>
+            <div class="icon-btn"  @click.stop="store.clearManualEnergy(cook.cookIndex)" >🗑</div>
+            <span class="manual-badge">手入力</span>
+          </div>
         </div>
+        <!-- 入力モード -->
+        <div v-else>
+          <input type="number" v-model="manualInputVal" @keydown.enter="handleSave">
+          <div class="icon-btn" @click.stop="handleSave">✅</div>
+          <div class="icon-btn" @click.stop="editMode = false">×</div>
+        </div>
+
+      </span> 
+
+      <!-- 条件設定 -->
+      <div class="cook-actions">
+          <button @click.stop="store.openIngModal(cook.cookIndex)" class="action-btn">追加食材編集</button>
+          <button @click.stop="store.toggleSunday(cook.cookIndex)"
+              :class="['action-btn', 'sunday-btn', { active: cook.isSunday }]">☀ 日曜</button>
+          <button @click.stop="store.toggleCritical(cook.cookIndex)"
+              :class="['action-btn', 'critical-btn', { active: cook.isCritical }]">🍲 大成功</button>
+          <span v-if="cook.isCritical" class="multiplier">
+              {{ cook.isSunday ? '×3' : '×2' }}
+          </span>
+      </div> <!-- 条件設定 -->
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -120,4 +138,13 @@
     }
     .icon-btn:hover  { background: rgba(255,255,255,0.12); }
     .icon-btn:active { opacity: 0.6; }
+    .cook-num-row {
+        display: flex;
+        justify-content: space-between; 
+        align-items: center;
+    }
+    .weekday-mark {
+        font-size: 0.85em;
+        color: rgba(255,255,255,0.6);
+    }
 </style>

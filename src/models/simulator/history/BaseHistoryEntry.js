@@ -15,14 +15,16 @@ export class BaseHistoryEntry {
    * @param {RecipeLvSimulatorConfig} configSnapshot - レシピ、レベル下限上限、フィールドボーナス、イベントボーナス
    * @param {object} cookStatusRawMap - 日曜日フラグ、大成功フラグ(※mapプロパティのみ)
    * @param {number[]} manualEnergyMap - 手入力エナジー
+   * @param {number[]} weekScheduleSetting - 曜日設定
    * @param {Date} savedAt - 保存日時
    * @param {number} version - 履歴機能バージョン(保存時)
    */
-  constructor({ id, configSnapshot, cookStatusRawMap, manualEnergyMap , savedAt, version}) {
+  constructor({ id, configSnapshot, cookStatusRawMap, manualEnergyMap, weekScheduleSetting, savedAt, version}) {
     this.id = id;
     this.configSnapshot = configSnapshot; 
     this.cookStatusRawMap = cookStatusRawMap;
     this.manualEnergyMap = manualEnergyMap;
+    this.weekScheduleSetting = weekScheduleSetting;
     this.savedAt =  savedAt;
     this.version = version;
   }
@@ -77,6 +79,7 @@ export class BaseHistoryEntry {
       configSnapshot: tmpJsonHistoryEntry.configSnapshot, 
       cookStatusRawMap: tmpJsonHistoryEntry.cookStatusRawMap, 
       manualEnergyMap: tmpJsonHistoryEntry.manualEnergyMap, 
+      weekScheduleSetting: tmpJsonHistoryEntry.weekScheduleSetting,
       savedAt: new Date(tmpJsonHistoryEntry.savedAt),
       version: tmpJsonHistoryEntry.version, 
     });
