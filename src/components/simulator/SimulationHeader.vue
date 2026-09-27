@@ -15,7 +15,8 @@
   
   // 余剰EXP再計算
   const onExpForNextLvInput = (e) => {
-    store.setExpForNextLv(Number(e.target.value) || 0)
+     store.setExpForNextLv(Number(e.target.value) || 0);
+     e.target.value = store.config.expForNextLv;
   }
 
 </script>

@@ -19,8 +19,7 @@ export class RecipeLvSimulatorConfig {
 
     //■レベル範囲設定
     this._selectLvRange = new LevelRange(this._levelRange.minNum, this._levelRange.maxNum)//設定可能範囲の最小値と最大値から選択しているレベル範囲の初期値を設定
-    const nextLevelData = this._recipeLvMaster.find(m => m.level === this._selectLvRange.minNum + 1) //必要経験値はマスタ上の次のレベルのオブジェクトから取得する必要がある(そのレベルになるのに必要な経験値が格納されているため)
-    this._expForNextLv = nextLevelData?.requireExp ?? 0; //次のレベルまでに必要な経験値
+    this._expForNextLv = this.nextLevelData?.requireExp ?? 0; //次のレベルまでに必要な経験値
     this._initialExp = 0; //余剰(取得済み)EXP
 
     //■レシピ関係設定
@@ -77,8 +76,7 @@ export class RecipeLvSimulatorConfig {
     if (!this._levelRange.levelIsInRange(startLevel)) return;
     this._selectLvRange.minNum = startLevel;
 
-    const nextLevelData = this._recipeLvMaster.find(m => m.level === this.startLevel + 1)
-    if (nextLevelData) this.expForNextLv  = nextLevelData.requireExp;
+    if (this.nextLevelData) this.expForNextLv  = this.nextLevelData.requireExp;
     
   }
 
@@ -96,13 +94,26 @@ export class RecipeLvSimulatorConfig {
 
   get endLevel() { return this._selectLvRange.maxNum; }
 
+
+  // ■nextLevelData(設定下限値の次のレベルデータ)
+  /**
+   * 次のレベルのマスタデータ(そのレベルになるのに必要な経験値が格納されている)
+   */
+  get nextLevelData() {
+    return this._recipeLvMaster.find(m => m.level === this.startLevel + 1);
+  }
+
+
   // fieldBonus(フィールドボーナス) ─────────────────
   /**
    * @param {number} val - フィールドボーナス倍率(1.0 = ボーナスなし)
    */
   set fieldBonus(val) {
       const num = Number(val);
-      if (!(num >= 1.0)) return; // 履歴から空が来た場合等にそなえNaN対策(履歴側で対応するほうがよい可能性があるが値が散るのでここで対応)
+
+      // 0%(×1.0)未満だと計算が終わらなくなるため初期値で弾く
+      // 履歴から空が来た場合のNaNもここで弾く(値の入口が散らないようsetterで対応)
+      if (!(num >= 1.0)) return;  
       this._fieldBonus = num;
   }
   get fieldBonus() { return this._fieldBonus; }
@@ -114,7 +125,10 @@ export class RecipeLvSimulatorConfig {
    */
   set eventBonus(val) {
       const num = Number(val);
-      if (!(num > 0)) return; // 履歴から空が来た場合等にそなえNaN対策(履歴側で対応するほうがよい可能性があるが値が散るのでここで対応)
+  
+      // 0以下だと計算が終わらなくなるため初期値で弾く(イベントボーナス半減等の可能性も考え0.1～1は一旦許容とする)
+      // 履歴から空が来た場合のNaNもここで弾く(値の入口が散らないようsetterで対応)
+      if (!(num > 0)) return; 
       this._eventBonus = num;
   }
   get eventBonus() { return this._eventBonus; }
@@ -125,8 +139,9 @@ export class RecipeLvSimulatorConfig {
   * @param {number} expForNextLv - 必要経験値
   */
   set expForNextLv(expForNextLv) {
-      this._expForNextLv = expForNextLv;
-      this.calculateSurplusFromNext();
+    // 次のレベルの必要経験値を超える値は、その上限に丸める(それ以上は計算上意味がないため)
+    this._expForNextLv = this.nextLevelData ? Math.min(expForNextLv, this.nextLevelData.requireExp) : expForNextLv;
+    this.calculateSurplusFromNext();
   }
   get expForNextLv() { return this._expForNextLv; }
 
@@ -138,9 +153,8 @@ export class RecipeLvSimulatorConfig {
    * expForNextLv setter から自動で呼ばれる
   */
   calculateSurplusFromNext() {
-    const nextLevelData = this._recipeLvMaster.find(m => m.level === this.startLevel + 1);
-    if (nextLevelData) {
-        this._initialExp = Math.max(0, nextLevelData.requireExp - this.expForNextLv);
+    if (this.nextLevelData) {
+        this._initialExp = Math.max(0, this.nextLevelData.requireExp - this.expForNextLv);
     }
   }
   
