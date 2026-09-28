@@ -21,11 +21,7 @@ export const useHistoryStore = defineStore('history', () => {
 
   const localStorageCanSave = ref(true); // localStorageに保存できる環境かどうか
 
-  let saveTimeoutId = null;
-  watch(() => simulatorStore.results, () => {
-    clearTimeout(saveTimeoutId);
-    saveTimeoutId = setTimeout(() => saveCurrentSession(), 500);
-  });
+
   
   // タブが非表示(裏に回る等)になった瞬間即座に保存する
   document.addEventListener('visibilitychange', () => {
@@ -171,6 +167,18 @@ export const useHistoryStore = defineStore('history', () => {
     if(!currentSession.value) saveCurrentSession();
   }
 
+  // ── watchers ─────────────────
+  //■ 条件設定時一定間隔入力が止まった場合に直近のセッション自動保存
+  let saveTimeoutId = null;
+  watch(() => simulatorStore.results, () => {
+    clearTimeout(saveTimeoutId);
+    saveTimeoutId = setTimeout(() => saveCurrentSession(), 500);
+  });
+
+  //■ 曜日設定変更時直近のセッション自動保存
+  watch(() => simulatorStore.weekScheduleSetting, () => {
+    saveCurrentSession();
+  }, {deep: true});
 
   return {
     currentSession,
