@@ -43,6 +43,15 @@ export class CookStatusMap {
       this._map[cookIndex] = { ...status, isSunday: !status.isSunday };
   }
 
+  /**	
+  * 日曜フラグをすべてリセットする
+  **/  
+  clearAllSunday(){
+    Object.keys(this._map).forEach(cookIndex => {
+      const status = this.getStatus(cookIndex);
+      this._map[cookIndex] = {...status, isSunday:false};
+    })
+  } 
 
   /**	
   * 大成功フラグを反転させる
@@ -54,6 +63,17 @@ export class CookStatusMap {
       const status = this.getStatus(cookIndex);
       this._map[cookIndex] = { ...status, isCritical: !status.isCritical };
   }
+
+  /**	
+  * 大成功フラグをすべてリセットする
+  **/  
+  clearAllCritical(){
+    Object.keys(this._map).forEach(cookIndex => {
+      const status = this.getStatus(cookIndex);
+      this._map[cookIndex] = {...status, isCritical:false};
+    })
+  } 
+
 
   /**	
   * 追加食材を設定する

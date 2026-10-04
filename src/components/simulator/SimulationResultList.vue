@@ -5,6 +5,7 @@
   import LevelResultBlock from './LevelResultBlock.vue' //レベルごとの結果
   import TotalIngredientsSummary from './TotalIngredientsSummary.vue'; //全レベル通して必要になる食材数
 
+
   /****  Store ****/
   import { useSimulatorStore } from '../../stores/simulatorStore.js';
   const store = useSimulatorStore();
@@ -20,7 +21,6 @@
   const requireRemaingCnt = computed(() => {
     return Math.floor((store.results?.totalCookCount ?? 0) % MEALS_PER_DAY);
   });
-
 
   const totalExtraIngredients = computed(() => {
     if (!store.results) return {};
@@ -40,13 +40,6 @@
     
   });
 
-
-  const handleResetAll = () => {
-    if (window.confirm('設定中のすべての食材がリセットされます。\n本当によろしいですか？')) {
-      store.clearAllExtraIngredients();
-    }
-  }
-
   const hideZeroCount = ref(false);
   const visibleLevels = computed(() => {
     const levelsResults = store.results?.dishLevelsResults ?? [];
@@ -65,8 +58,8 @@
               <button class="btn-reset" @click="store.openWeekScheduleModal()">
                 曜日設定
               </button>
-              <button class="btn-reset" @click="handleResetAll">
-                追加食材を一括リセット
+              <button class="btn-gear" title="設定の管理" aria-label="設定の管理" @click="store.openStatusManageModal()">
+                ⚙
               </button>
             </div>
             
@@ -173,4 +166,13 @@
     height: 15px;
     cursor: pointer;
   }
+  .btn-gear {
+    font-size: 1rem;
+    line-height: 1;
+    padding: 3px 7px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.8);
+  }
+  .btn-gear:hover { background: rgba(255,255,255,0.2); }
 </style>
