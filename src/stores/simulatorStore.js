@@ -43,6 +43,9 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // 有効曜日設定モーダル開閉
   const isWeekScheduleModalOpen  = ref(false);
 
+  // 設定の管理モーダル開閉
+  const isStatusManageModalOpen = ref(false);   
+
   // ── getters: 計算値（computed と同じ） ────────────────────────────
   //■料理カテゴリの変更
   // 選択中のレシピオブジェクトを返す
@@ -98,6 +101,11 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // ■判定条件紐づけmap更新用
   const toggleSunday = (cookIndex) => cookStatusMap.toggleSunday(cookIndex); //日曜日フラグ
   const toggleCritical = (cookIndex) => cookStatusMap.toggleCritical(cookIndex); //大成功フラグ
+
+  //大成功の全リセット
+  const clearAllCritical = () => cookStatusMap.clearAllCritical();
+  //日曜日の全リセット
+  const clearAllSunday = () => cookStatusMap.clearAllSunday();
   
   /**** 追加食材関係 *****/
   // ■追加食材入力関係
@@ -116,6 +124,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
   //全追加食材リセット
   const clearAllExtraIngredients = () => cookStatusMap.clearAllExtraIngredients();
 
+
+
   /**** 手入力エナジー *****/
   // 追加
   const setManualEnergy = (cookIndex, val) => {
@@ -125,6 +135,12 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // クリア
   const clearManualEnergy = (cookIndex) => {
     delete manualEnergyMap[cookIndex];
+  }
+  //全手入力エナジーのクリア
+  const clearAllManualEnergy = () => {
+    Object.keys(manualEnergyMap).forEach(cookIndex => {
+      clearManualEnergy(cookIndex);
+    });
   }
 
   // ■手入力エナジーの一括復元（履歴読み込み用）
@@ -142,6 +158,10 @@ export const useSimulatorStore = defineStore('simulator', () => {
   // ■モーダル開閉
   const openWeekScheduleModal  = () => isWeekScheduleModalOpen.value = true;
   const closeWeekScheduleModal  = () => isWeekScheduleModalOpen.value = false;
+
+  /**** シミュレーション一括設定画面 *****/
+  const openStatusManageModal  = () => isStatusManageModalOpen.value = true;
+  const closeStatusManageModal = () => isStatusManageModalOpen.value = false;
 
 
   // ── watchers ─────────────────
@@ -179,7 +199,9 @@ export const useSimulatorStore = defineStore('simulator', () => {
     // ------ 週間スケジュール表示設定 ------
     weekScheduleSetting,
     isWeekScheduleModalOpen,
-    
+    // ------ シミュレーション一括設定 ------
+    isStatusManageModalOpen,
+
     // ------ アクション(各動きは上記参照)  ------    
     setExpForNextLv,
     toggleSunday,
@@ -193,12 +215,19 @@ export const useSimulatorStore = defineStore('simulator', () => {
     clearExtraIngredients,
     setManualEnergy,
     clearManualEnergy,
+    clearAllManualEnergy,
+    clearAllCritical,
+    clearAllSunday,
     restoreManualEnergyMap,
 
     resetWeekScheduleSetting,
     openWeekScheduleModal,
     closeWeekScheduleModal ,
     findCategoryByRecipeName,
+
+    
+    openStatusManageModal,
+    closeStatusManageModal,
   }
 
 })

@@ -13,7 +13,9 @@
   
   //曜日設定用モーダル
   import WeekdaySettingsModal from './components/simulator/WeekdaySettingsModal.vue'  // 曜日設定モーダル
-
+  
+  //条件設定一括確認用モーダル
+  import StatusManageModal from './components/simulator/StatusManageModal.vue' 
 
   //** 開発用 **/
   const isDev = import.meta.env.DEV
@@ -25,6 +27,7 @@
     <SimulationResultList />
     <ExtraIngModal/>
     <WeekdaySettingsModal/>
+    <StatusManageModal/>
     
     <HistoryDrawer />
     
