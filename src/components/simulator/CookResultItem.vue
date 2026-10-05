@@ -41,6 +41,10 @@
     return `${day.displayStr}${slot.icon}`;
   });
 
+  //■この回の追加食材の合計個数
+  const extraTotalNum = computed(() => {
+    return props.cook.extraIngredients.reduce((sum, extra) => sum + extra.num, 0);
+  });
 </script>
 
 <template>
@@ -76,15 +80,30 @@
       
 
       <!-- 条件設定 -->
-      <div class="cook-actions">
-          <button @click.stop="store.openIngModal(cook.cookIndex)" class="action-btn">追加食材編集</button>
+      <div class="cook-conditions">
+
+        <!-- 日曜・大成功 -->
+        <div class="cook-actions">
           <button @click.stop="store.toggleSunday(cook.cookIndex)"
               :class="['action-btn', 'sunday-btn', { active: cook.isSunday }]">☀ 日曜</button>
           <button @click.stop="store.toggleCritical(cook.cookIndex)"
               :class="['action-btn', 'critical-btn', { active: cook.isCritical }]">🍲 大成功</button>
-          <span v-if="cook.isCritical" class="multiplier">
-              {{ cook.isSunday ? '×3' : '×2' }}
-          </span>
+          <span v-if="cook.isCritical" class="multiplier">{{ cook.isSunday ? '×3' : '×2' }} </span>
+          <span v-if="cook.isCritical" class="multiplier-note">(イベント倍率は含まない)</span>
+        </div>
+
+        <!-- 追加食材 -->
+        <div class="extra-box">
+          <div class="extra-box-header">
+            <button @click.stop="store.openIngModal(cook.cookIndex)" class="action-btn">追加食材編集</button>
+            <span class="extra-total">{{ extraTotalNum > 0 ? `計 ${extraTotalNum}個` : 'なし' }}</span>
+          </div>
+          <div v-if="cook.extraIngredients.length > 0" class="extra-list">
+            <span v-for="extra in cook.extraIngredients" :key="extra.ingredient.name" class="extra-item">
+              <img :src="imgUrl(extra.ingredient.img)" :alt="extra.ingredient.name" class="ing-img">×{{ extra.num }}
+            </span>
+          </div>
+        </div>
       </div> <!-- 条件設定 -->
     </div>
   </div>
@@ -155,5 +174,45 @@
     color: rgba(255,255,255,0.45); 
     font-weight: normal;
     white-space: nowrap;
+  }
+  /* 追加食材の枠 */
+  .extra-box {
+    padding: 6px 8px;
+    border: 1px solid rgba(100,160,255,0.2);
+    border-radius: 6px;
+    background: rgba(15,37,64,0.5);
+  }
+  .extra-box-header {
+    display: flex;
+    justify-content: space-between;  
+    align-items: center;
+  }
+  .extra-total {
+    font-size: 0.75em;
+    padding-left: 2px;
+    color: rgba(255,255,255,0.45);
+  }
+  .extra-list {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 4px 10px; 
+    margin-top: 6px;
+  }
+  .extra-item {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.85em;
+  }
+  .ing-img { width: 20px; height: 20px; object-fit: contain; }
+
+  .cook-conditions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;              
+  }
+  .multiplier-note {
+    font-size: 0.75em;
+    color: rgba(255,255,255,0.45);
   }
 </style>

@@ -33,16 +33,21 @@
 </template>
 
 <style scoped>
-    .level-block {
-        border: 1px solid rgba(100,160,255,0.2);
-        padding: 15px;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.05);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        color: white;
-    }
-    .carry-over {
-        color: #ffd966;
-        font-weight: bold;
-    }
+  .level-block {
+    border: 1px solid rgba(100,160,255,0.2);
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    color: white;
+  }
+  .carry-over {
+    color: #ffd966;
+    font-weight: bold;
+  }
+  .cook-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 </style>
