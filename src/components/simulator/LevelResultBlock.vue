@@ -9,7 +9,7 @@
 
 <template>
     <!-- レベル内料理結果 -->
-    <details class="level-block">
+    <details open class="level-block">
         <!-- レベル内料理小計・条件 -->
         <summary class="level-summary">
             <h3>
