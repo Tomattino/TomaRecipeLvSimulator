@@ -106,6 +106,18 @@ export class CookStatusMap {
   }
 
   /**	
+  * 指定キーの追加食材の合計個数を取得する
+  * 
+  * @param {number} cookIndex - 個別シミュレーション条件紐づけキー	
+  * 
+  **/
+  getExtraTotalQty(cookIndex) {
+    const extraIngredients = this.getStatus(cookIndex).extraIngredients;
+    return Object.values(extraIngredients ?? {}).reduce((sum, qty) => sum + qty, 0);
+  }
+
+
+  /**	
   * 指定キーの追加食材をすべてクリアする
   * 
   * @param {number} cookIndex - 個別シミュレーション条件紐づけキー	

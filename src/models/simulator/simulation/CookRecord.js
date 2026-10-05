@@ -36,7 +36,5 @@ export class CookRecord {
   get finalEnergy() {
     return this.manualInputEnergy ?? this.dish.finalEnergy(this.extraIngredients, this.isSunday, this.isCritical);
   }
-
   
-
 }

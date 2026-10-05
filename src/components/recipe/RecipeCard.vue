@@ -1,13 +1,9 @@
 <script setup>
-  import { computed } from 'vue';
-
+  import { Recipe } from '../../models/common/Recipe.js' //レシピ情報
+  
   const props = defineProps({
-      recipe: Object //対象レシピ
+      recipe: Recipe //対象レシピ
   });
-
-  const totalIngredients = computed(() =>
-      props.recipe.requireIngredients.reduce((sum, ing) => sum + ing.num, 0)
-  );
   
   //TODO共通化
   const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
@@ -39,7 +35,7 @@
     </div> <!-- 必要食材 -->
 
     <!-- 必要食材統計 -->
-    <p class="total-ing">食材合計:  {{ totalIngredients }}</p>
+    <p class="total-ing">食材合計:  {{ recipe.totalRequireIngredientNum  }}</p>
   
   </div> <!-- レシピ情報 -->
 </template>

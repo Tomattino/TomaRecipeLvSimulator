@@ -20,6 +20,14 @@ export class Recipe {
     this.requireIngredients = requireIngredients; 
     this.baseStrength = baseStrength;
   }
+
+  /**
+  *  必要食材の合計個数を取得する
+  */
+  get totalRequireIngredientNum(){
+    return this.requireIngredients.reduce((sum, ing) => sum + ing.num, 0);
+  }
+
   /**
    *  基本エナジーを計算
    *  cf.) レシピ基本エナジー = Round[ (レシピ食材の総エナジー)×(1+食材の数ボーナス) ]

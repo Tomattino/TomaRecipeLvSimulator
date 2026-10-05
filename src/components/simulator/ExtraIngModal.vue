@@ -1,5 +1,7 @@
 <script setup>
   /****  コンポーネント取り込み ****/
+  import { computed } from 'vue';
+
   import { pokesleepIngredients } from '../../data/ingredients/pokesleepIngredients.js' //食材マスタ
   import ExtraIngCard from './ExtraIngCard.vue'; //追加食材編集パネル
   
@@ -15,6 +17,16 @@
     );
     return foundIngInRecipe?.num ?? 0;
   }
+
+  //■この回の追加食材の合計個数
+  const extraIngredientNum = computed(() =>  {
+    return store.getExtraTotalQty(store.activeEditCookIndex);
+  });
+
+  //■この回の総食材数(レシピの食材 + 追加食材)
+  const totalIngredientNum = computed(() => {
+    return  (store.targetRecipe?.totalRequireIngredientNum ?? 0) + extraIngredientNum.value
+  });
 </script>
 
 <template>
@@ -32,6 +44,10 @@
       
       <!-- ツール -->
       <div class="modal-toolbar">
+        <span class="ing-total">
+          総食材数：<strong class="ing-total-num">{{ totalIngredientNum }}</strong>
+          <span class="ing-total-extra">(追加食材数：{{ extraIngredientNum }})</span>
+        </span>
         <button class="btn-reset" @click="store.clearExtraIngredients(store.activeEditCookIndex)">リセット</button>
       </div>
 
@@ -103,8 +119,10 @@
     align-items: center;
   }
   .modal-toolbar {
+    display: flex;
+    justify-content: space-between;   /* 左に個数、右にリセット */
+    align-items: center;
     margin-bottom: 10px;
-    text-align: right;
   }
   .btn-reset {
     border: 1px solid rgba(255,152,0,0.5);
@@ -112,7 +130,6 @@
     color: rgba(255,152,0,0.9);
     padding: 5px 10px;
     font-size: 0.75em;
-    margin-bottom: 10px;
   }
   .btn-reset:hover { background: rgba(255,152,0,0.25); }
   .btn-close {
@@ -127,5 +144,18 @@
     padding: 0;
   }
   .btn-close:hover { background: rgba(255,255,255,0.15); }
+
+  .ing-total {
+    font-size: 0.8em;
+    color: rgba(255,255,255,0.7);
+  }
+  .ing-total-num {
+    font-size: 1.4em;                 /* 総食材数の数字だけ少し大きく */
+    color: white;
+  }
+  .ing-total-extra {
+    margin-left: 4px;
+    color: rgba(255,255,255,0.5);
+  }
 
 </style>
