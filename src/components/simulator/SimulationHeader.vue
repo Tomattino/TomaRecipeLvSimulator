@@ -13,6 +13,14 @@
 
   const isModalOpen = ref(false); //食材選択モーダル表示制御
   
+  //■イベントボーナスのよく使う倍率(入力欄の下にバッジで出す)
+  const EVENT_BONUS_PRESETS = [
+    { label: '×1.0',  value: 1.0  },
+    { label: '×1.1',  value: 1.1  },
+    { label: '×1.25', value: 1.25 },
+    { label: '×1.5',  value: 1.5  },
+  ];
+
   // 余剰EXP再計算
   const onExpForNextLvInput = (e) => {
      store.setExpForNextLv(Number(e.target.value) || 0);
@@ -71,6 +79,11 @@
                 <label>イベントボーナス</label>
                 <input type="number" v-model="store.config.eventBonus" step="0.1" min="1"
                     class="text-input">
+                <div class="preset-row">
+                    <button v-for="preset in EVENT_BONUS_PRESETS" :key="preset.value" type="button"
+                        class="preset-badge" :class="{ active: store.config.eventBonus === preset.value }"
+                        @click="store.config.eventBonus = preset.value">{{ preset.label }}</button>
+                </div>
               </div>
             </div>
         </div>
@@ -81,7 +94,7 @@
 </template>
 
 <style scoped>
-.header-info {
+  .header-info {
     background: linear-gradient(160deg, #1a3a5c 0%, #0f2540 100%);
     color: white;
     padding: 16px;
@@ -92,36 +105,36 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-.title {
+  }
+  
+  .title {
     margin: 0;
     font-size: clamp(1rem, 3vw, 1.4rem);
     text-align: center;
     letter-spacing: 0.05em;
-}
-
-.tomato-icon::after {
+  }
+  
+  .tomato-icon::after {
     content: "🍅";
     margin-left: 6px;
-}
-
-/* メインエリア：横並び */
-.main-area {
+  }
+  
+  /* メインエリア：横並び */
+  .main-area {
     display: flex;
     gap: 16px;
     align-items: stretch;
-}
-
-.recipe-col {
+  }
+  
+  .recipe-col {
     flex-shrink: 0;
     width: 160px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.select-btn {
+  }
+  
+  .select-btn {
     width: 100%;
     padding: 7px;
     border-radius: 8px;
@@ -131,21 +144,21 @@
     font-size: 0.85em;
     cursor: pointer;
     transition: background 0.15s;
-}
-
-.select-btn:hover {
+  }
+  
+  .select-btn:hover {
     background: rgba(100, 160, 255, 0.3);
-}
-
-.settings-col {
+  }
+  
+  .settings-col {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
     min-width: 0;
-}
-
-.section {
+  }
+  
+  .section {
     background: rgba(255, 255, 255, 0.07);
     border: 1px solid rgba(100, 160, 255, 0.2);
     border-radius: 12px;
@@ -153,36 +166,36 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.section-label {
+  }
+  
+  .section-label {
     margin: 0;
     font-size: 0.75em;
     color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.05em;
-}
-
-.inputs-row {
+  }
+  
+  .inputs-row {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 20px;
     align-items: flex-start;
-}
-
-.input-unit {
+  }
+  
+  .input-unit {
     display: flex;
     flex-direction: column;
     gap: 4px;
     min-width: 120px;
     flex: 1;
-}
-
-.input-unit label {
+  }
+  
+  .input-unit label {
     font-size: 0.8em;
     color: rgba(255, 255, 255, 0.7);
-}
-
-.text-input {
+  }
+  
+  .text-input {
     width: 90px;
     padding: 5px 8px;
     border-radius: 6px;
@@ -190,21 +203,47 @@
     background: rgba(255, 255, 255, 0.1);
     color: white;
     font-size: 0.95em;
-}
-
-.surplus {
+  }
+  
+  .surplus {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.75em;
-}
-
-/* モバイル：縦積みに */
-@media (max-width: 520px) {
+  }
+  
+  /* モバイル：縦積みに */
+  @media (max-width: 520px) {
     .main-area {
-        flex-direction: column;
+      flex-direction: column;
+    }
+  
+    .recipe-col {
+      width: 100%;
+    }
+  }
+  
+  /* イベントボーナスのよく使う倍率 */
+  .preset-row {
+    display: flex;
+    flex-wrap: wrap;  
+    gap: 4px;
+    margin-top: 4px;
+  }
+    .preset-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(100, 160, 255, 0.45);
+    background: rgba(100, 160, 255, 0.16); 
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.78em;
+    cursor: pointer;
+    white-space: nowrap;
+    }
+    .preset-badge:hover { background: rgba(100, 160, 255, 0.3); }
+    .preset-badge.active {
+    background: #2573c9;      
+    border-color: #6fb1ff; 
+    color: white;
+    font-weight: bold;
     }
 
-    .recipe-col {
-        width: 100%;
-    }
-}
 </style>
