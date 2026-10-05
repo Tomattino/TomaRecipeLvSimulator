@@ -22,23 +22,10 @@
     return Math.floor((store.results?.totalCookCount ?? 0) % MEALS_PER_DAY);
   });
 
-  const totalExtraIngredients = computed(() => {
-    if (!store.results) return {};
-
-    const tmpExtraIngArr = store.results.dishLevelsResults.flatMap(level => level.cooks).flatMap(cook => cook.extraIngredients);
-    
-    const totalExtraIngredients = {};
-
-    tmpExtraIngArr.forEach((tmpIng) => {
-      const tmpIngName = tmpIng.ingredient.name;
-
-      totalExtraIngredients[tmpIngName] ??= { ingredient: tmpIng.ingredient, num: 0 };
-      totalExtraIngredients[tmpIngName].num += tmpIng.num;
-    });
-
-    return totalExtraIngredients;
-    
-  });
+  //各回の料理結果の配列取得
+  const cooksResultArr = computed(() => {
+    return store.results?.dishLevelsResults.flatMap(level => level.cooks) ?? [];
+  }); 
 
   const hideZeroCount = ref(false);
   const visibleLevels = computed(() => {
@@ -75,8 +62,9 @@
             <TotalIngredientsSummary
               v-if="store.results"
               :targetRecepie="store.targetRecipe"
-              :totalDishCoutnt="store.results.totalCookCount"
-              :totalExtraIngredients="totalExtraIngredients"
+              :cooksResult="cooksResultArr"
+              :showWeek="store.weekScheduleSetting.showWeekOfDayLabel"
+              :weekCooksCount="store.weekScheduleSetting.enabledMealSlots.length"
             />
 
             <label class="hide-zero-toggle">

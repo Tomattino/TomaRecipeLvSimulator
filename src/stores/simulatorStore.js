@@ -114,7 +114,7 @@ export const useSimulatorStore = defineStore('simulator', () => {
   
   const getExtraQty = (cookIndex, ingKey) => cookStatusMap.getStatus(cookIndex).extraIngredients?.[ingKey] ?? 0; //追加食材数取得
   const getExtraTotalQty = (cookIndex) => cookStatusMap.getExtraTotalQty(cookIndex); //追加食材の合計個数取得
-
+  
   //■追加食材モーダル関係
   const openIngModal  = (cookIndex) => activeEditCookIndex.value = cookIndex;//追加食材モーダル起動
   const closeIngModal = () => activeEditCookIndex.value = null;//追加食材モーダルを閉じる
@@ -205,12 +205,11 @@ export const useSimulatorStore = defineStore('simulator', () => {
     setExpForNextLv,
     toggleSunday,
     toggleCritical,
-
     setExtraQty,
     adjustExtraQty,
     getExtraQty,
     getExtraTotalQty,
-
+    
     clearAllExtraIngredients,
     openIngModal,
     closeIngModal,

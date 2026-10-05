@@ -4,37 +4,46 @@
   const isOpen = ref(true);  
 
   const props = defineProps({
-    targetRecepie: Object, //作成予定食材
-    totalDishCoutnt : Number, //料理作成総回数
-    totalExtraIngredients: Object,  //追加食材群{ingredient, extra} の集計済みオブジェクト
+    targetRecepie: Object, //作成レシピ情報
+    cooksResult: Array,    //各回の結果オブジェクト
+    showWeek: Boolean,      //設定曜日分を表示するか
+    weekCooksCount: Number,  //設定曜日分の料理作成回数
   })
 
-  const totalRequireIngredients = computed(() =>{
-    const tmpTotalRequireIngredients = {};
-    
-    props.targetRecepie.requireIngredients.forEach(tmpIng => {
-        const tmpIngName = tmpIng.ingredient.name;
-        tmpTotalRequireIngredients[tmpIngName] ??= { ingredient: tmpIng.ingredient, num: tmpIng.num * props.totalDishCoutnt };
-    });
-
-    return tmpTotalRequireIngredients;
-  });
-
-  const totalIngredients  = computed(() =>{
+  //■渡された回で使う食材を、食材ごとに集計する(キーは食材名)
+  const sumIngredients = (cooks) => {
     const totals = {};
 
-    Object.values(totalRequireIngredients.value).forEach(({ingredient, num}) => {
-        totals[ingredient.name] = { ingredient, required: num, extra: 0 };
+    props.targetRecepie.requireIngredients.forEach(({ingredient, num}) => {
+        totals[ingredient.name] = { ingredient, required: num * cooks.length, extra: 0 };
     });
 
-    Object.values(props.totalExtraIngredients).forEach(({ingredient, num}) => {
+    cooks.flatMap(cook => cook.extraIngredients).forEach(({ingredient, num}) => {
         totals[ingredient.name] ??= { ingredient, required: 0, extra: 0 };
         totals[ingredient.name].extra += num; 
     });
 
-    return  Object.values(totals);
+    return  totals;
+  };
+  
+  //■設定曜日分の回(先頭から切り出す。回が足りない時は、あるだけになる)
+  const weekCooks = computed(() => { 
+    const weekCooksCount  = Math.min(props.weekCooksCount, props.cooksResult.length)
+    return props.cooksResult.slice(0, weekCooksCount );
   });
 
+  //■表に出す行(全体の集計に、設定曜日分の数字を足したもの)
+  const totalIngredients = computed(() => {
+    const allTotals  = sumIngredients(props.cooksResult);
+    const weekTotals = sumIngredients(weekCooks.value);//設定曜日分は全体の一部なので、設定曜日分にしか無い食材は無い(全体の行を回せば足りる)
+
+
+    return Object.values(allTotals).map(item => ({
+      ...item,
+      weekRequired: weekTotals[item.ingredient.name]?.required ?? 0,
+      weekExtra:    weekTotals[item.ingredient.name]?.extra ?? 0,
+    }));
+  });
   //TODO共通化
   const imgUrl = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
 
@@ -44,7 +53,7 @@
 <template>
   <div class="ing-panel">
     <div class="ing-header"  @click="isOpen = !isOpen">
-      <span>合計食材数</span>
+      <span>合計食材数<template v-if="showWeek">（設定曜日分：{{ weekCooks.length }}回）</template></span>
       <span class="chevron" :class="{ open: isOpen }">▼</span>
     </div>  
     <Transition name="slide">
@@ -53,8 +62,14 @@
           <tr v-for="item in totalIngredients" :key="item.ingredient.name">
             <td><img :src="imgUrl(item.ingredient.img)" class="ing-img" /></td>
             <td class="ing-name">{{ item.ingredient.name }}</td>
-            <td class="ing-total">{{ item.required + item.extra }}<span class="ing-unit">個</span></td>
-            <td class="ing-detail">必須 {{ item.required }} / 追加 {{ item.extra }}</td>
+            <td class="ing-total">
+              {{ item.required + item.extra }}<span class="ing-unit">個</span>
+              <div v-if="showWeek" class="ing-week-total">(曜日分:{{ item.weekRequired + item.weekExtra }}個)</div>
+            </td>
+            <td class="ing-detail">
+              必須 {{ item.required }} / 追加 {{ item.extra }}
+              <div v-if="showWeek" class="ing-week">(必須 {{ item.weekRequired }} / 追加 {{ item.weekExtra }})</div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -128,6 +143,10 @@
 
   .slide-enter-active, .slide-leave-active { transition: opacity 0.2s; }
   .slide-enter-from, .slide-leave-to { opacity: 0; }
-
+  .ing-week-total {
+    font-size: 0.70rem;
+    font-weight: normal;  
+    color: rgba(255,255,255,0.75);
+  }
 
 </style>

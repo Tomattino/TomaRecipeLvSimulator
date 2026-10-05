@@ -43,7 +43,8 @@
 
   //■この回の追加食材の合計個数
   const extraTotalNum = computed(() => {
-    return props.cook.extraIngredients.reduce((sum, extra) => sum + extra.num, 0);
+    return store.getExtraTotalQty(props.cook.cookIndex);
+
   });
 </script>
 
