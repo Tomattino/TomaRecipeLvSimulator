@@ -124,8 +124,6 @@ export const useSimulatorStore = defineStore('simulator', () => {
   //全追加食材リセット
   const clearAllExtraIngredients = () => cookStatusMap.clearAllExtraIngredients();
 
-
-
   /**** 手入力エナジー *****/
   // 追加
   const setManualEnergy = (cookIndex, val) => {

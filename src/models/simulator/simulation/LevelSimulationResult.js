@@ -30,6 +30,7 @@ export class LevelSimulationResult {
     this.carryOver = carryOver;
     this.totalEnergyInThisLevel = this.carryOver;
     this.cookIndex = cookIndexStart;
+    this._remainingExpMap = {}; //次のレベルまであとどのくらいの各回経験値が必要か
     this.cooks = this._calcCooks ();
   }
 
@@ -63,6 +64,7 @@ export class LevelSimulationResult {
       
       tmpCooks.push(cook);
       this.totalEnergyInThisLevel += cook.finalEnergy; //レベル内合計エナジーを取得
+      this._remainingExpMap[this.cookIndex] = this.requireExpForNext - this.totalEnergyInThisLevel;//次のレベルまでの残りEXPを記録
       this.cookIndex++;
     }
     
@@ -86,4 +88,17 @@ export class LevelSimulationResult {
   *  ※計算は条件が変わるたびにこのクラス自体が再生成されるため最終結果のみが取得できる
   */  
   get nextCookIndex() { return this.cookIndex; }
+
+
+  /**
+  *  各回を作り終えた時点での「次のレベルまでの残りEXP」を取得
+  *  (そのレベルの最後の回は 0 以下になる)
+  *  ※計算は条件が変わるたびにこのクラス自体が再生成されるため最新結果のみが取得できる
+  * 
+  *  @param {number} cookIndex - 個別シミュレーション条件紐づけキー
+  * 
+  */
+  getRemainingExp(cookIndex) {
+    return this._remainingExpMap[cookIndex];
+  }
 }

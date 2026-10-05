@@ -26,6 +26,7 @@
                 :key="cook.cookIndex"
                 :cook="cook"
                 :localIndex="index + 1"
+                :remainingExp="res.getRemainingExp(cook.cookIndex)"
             />
         </div> <!-- 各回料理結果リスト -->
     </details> <!-- レベル内料理結果 -->
