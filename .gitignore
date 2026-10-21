@@ -24,3 +24,9 @@ dist-ssr
 
 # for develop
 develop/*
+
+# Playwright(画面テスト)の実行結果
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

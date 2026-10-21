@@ -1,0 +1,43 @@
+# ■ 画面テスト(Playwright)を GitHub 上で自動で回す
+#   main への push と、プルリクエストの時に動く
+#   結果はリポジトリの「Actions」タブで見られる
+
+name: 画面テスト
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # リポジトリの中身を取ってくる
+      - uses: actions/checkout@v4
+
+      # Node.js を用意する(npm の取ってきたものを覚えておいて、2回目以降を速くする)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # package-lock.json のとおりに依存を入れる
+      - run: npm ci
+
+      # テスト用のブラウザ(chromium)と、動かすのに必要な部品を入れる
+      - run: npx playwright install --with-deps chromium
+
+      # テストを回す(開発サーバーは playwright.config.js の設定で自動で立ち上がる)
+      - run: npm run test:e2e
+
+      # 失敗した時に、報告書(失敗した瞬間の画面など)をダウンロードできるように残す
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
