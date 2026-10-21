@@ -2,6 +2,8 @@ import { pokesleepIngredients } from "../ingredients/pokesleepIngredients.js";
 import { IngredientsInDishes } from "../../models/common/IngredientsInDishes.js";
 import { Recipe } from "../../models/common/Recipe.js";
 
+//■キー(例："bounceCurryUdon")は履歴の保存データに使うため、公開後は変更しないこと
+//  (変更すると、そのキーで保存された履歴が読めなくなる)
 export const dessertRecipes = {
     "honeyGatherChocolateWaffles": new Recipe(
         "ミツあつめチョコワッフル",
