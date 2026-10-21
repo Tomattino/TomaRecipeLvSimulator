@@ -6,8 +6,13 @@
  ************************************/
 
 export const appConfig = {
-    historyStorage: {
-      version: 1, //2026.8.11 初版
-      supportedVersions: [1],
-    },
+  /*
+  * 1: 2026.8.11 初版
+  * 2: 2026.10.22 履歴情報にレシピのキーを追加
+  */
+  historyStorage: {
+    version: 2,
+    supportedVersions: [1, 2],
+
+  },
 }

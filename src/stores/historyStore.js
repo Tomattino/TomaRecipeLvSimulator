@@ -43,7 +43,8 @@ export const useHistoryStore = defineStore('history', () => {
           fieldBonus: simulatorStore.config.fieldBonus,
           eventBonus: simulatorStore.config.eventBonus,
           expForNextLv: simulatorStore.config.expForNextLv,
-          selectedRecipeName: simulatorStore.config.selectedRecipeName,
+          selectedRecipeKey: simulatorStore.config.selectedRecipeKey,
+          selectedRecipeName: simulatorStore.targetRecipe?.name,
       },
       cookStatusRawMap: simulatorStore.cookStatusMap.toSnapshotObjectForSaveData(),
       manualEnergyMap: {...simulatorStore.manualEnergyMap},
@@ -75,10 +76,14 @@ export const useHistoryStore = defineStore('history', () => {
             manualEnergyMap: loadedManualEnergyMap,
             weekScheduleSetting: loadedWeekScheduleSetting, } = entry;
     
-    const foundCategory = simulatorStore.findCategoryByRecipeName(loadedconfigSnapshot.selectedRecipeName);
-    if (foundCategory) simulatorStore.selectedCategory = foundCategory;
+    //キーがあればそのまま使い、無ければ(旧履歴対応(version:1))名前からキーを調べる
+    const recipeKey = loadedconfigSnapshot.selectedRecipeKey ?? simulatorStore.findRecipeKeyByName(loadedconfigSnapshot.selectedRecipeName);
 
-    simulatorStore.config.restoreSnapshot(loadedconfigSnapshot);
+    const foundCategory = simulatorStore.findCategoryByRecipeKey(recipeKey);
+    if (foundCategory) simulatorStore.selectedCategory = foundCategory;
+    
+    //旧履歴(version:1)用にキーについては上書き対応
+    simulatorStore.config.restoreSnapshot({ ...loadedconfigSnapshot, selectedRecipeKey: recipeKey });
 
     simulatorStore.weekScheduleSetting.restoreSnapshot(loadedWeekScheduleSetting ?? new WeekScheduleSetting());
     

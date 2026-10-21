@@ -23,7 +23,7 @@ export class RecipeLvSimulatorConfig {
     this._initialExp = 0; //余剰(取得済み)EXP
 
     //■レシピ関係設定
-    this.selectedRecipeName = ''; //選択レシピ名称
+    this.selectedRecipeKey = '' //選択レシピキー
     
     //■倍率関係
     this._fieldBonus = 1.0; //フィールドボーナス
@@ -174,14 +174,14 @@ export class RecipeLvSimulatorConfig {
   * @param {number} snapshot.fieldBonus - フィールドボーナス
   * @param {number} snapshot.eventBonus - イベントボーナス
   * @param {number} snapshot.expForNextLv - 次のレベルまでに必要な経験値
-  * @param {string} snapshot.selectedRecipeName - 選択レシピ名称
+  * @param {string} snapshot.selectedRecipeKey - 選択レシピのキー
   */
-  restoreSnapshot({ startLevel, endLevel, fieldBonus, eventBonus, expForNextLv, selectedRecipeName }) {
+  restoreSnapshot({ startLevel, endLevel, fieldBonus, eventBonus, expForNextLv, selectedRecipeKey }) {
     //restore時上限下限のチェックに引っかかってしまうため事前に最小最大値を一時的に適用
     this.startLevel = this.configMinLevel;
     this.endLevel = this.configMaxLevel;
 
-    this.selectedRecipeName = selectedRecipeName;
+    this.selectedRecipeKey = selectedRecipeKey;
     this.startLevel = startLevel;
     this.endLevel = endLevel;
     this.fieldBonus = fieldBonus;

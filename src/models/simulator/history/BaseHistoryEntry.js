@@ -12,7 +12,7 @@ import { appConfig } from '../../../config/appConfig.js'
 export class BaseHistoryEntry {
     /**
    * @param {string} id - 一意のID
-   * @param {RecipeLvSimulatorConfig} configSnapshot - レシピ、レベル下限上限、フィールドボーナス、イベントボーナス
+   * @param {RecipeLvSimulatorConfig} configSnapshot - レシピID、レシピ名、レベル下限上限、フィールドボーナス、イベントボーナス
    * @param {object} cookStatusRawMap - 日曜日フラグ、大成功フラグ(※mapプロパティのみ)
    * @param {number[]} manualEnergyMap - 手入力エナジー
    * @param {number[]} weekScheduleSetting - 曜日設定

@@ -15,11 +15,11 @@
   const emit = defineEmits(['update:modelValue']);
 
   const sortedRecipes = computed(() =>
-    Object.values(store.currentRecipes).sort((a, b) => b.baseStrength - a.baseStrength)
+    Object.entries(store.currentRecipes).sort(([,a], [,b]) => b.baseStrength - a.baseStrength)
   );
   
-  const handleSelect = (recipe) => {
-    store.config.selectedRecipeName = recipe.name;
+  const handleSelect = (recipeKey) => {
+    store.config.selectedRecipeKey  = recipeKey;
     emit('update:modelValue', false);
   }
 </script>
@@ -49,11 +49,11 @@
       <!-- 選択対象レシピ表示 -->
       <div class="recipe-grid">
         <RecipeSelectCard 
-          v-for="recipe in sortedRecipes" 
-          :key="recipe.name"
+          v-for="[recipeKey, recipe] in sortedRecipes" 
+          :key="recipeKey"
           :recipe="recipe"
-          :is-selected="store.config.selectedRecipeName === recipe.name"
-          @select="handleSelect"
+          :is-selected="store.config.selectedRecipeKey  === recipeKey"
+          @select="handleSelect(recipeKey)"
         />
       </div>
     </div>

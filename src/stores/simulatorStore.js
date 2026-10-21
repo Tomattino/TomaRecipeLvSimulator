@@ -33,8 +33,8 @@ export const useSimulatorStore = defineStore('simulator', () => {
     dessert: dessertRecipes
   };
 
-  if (!config.selectedRecipeName) {
-    config.selectedRecipeName = Object.values(initialRecipes[selectedCategory.value])[0]?.name ?? '';
+  if (!config.selectedRecipeKey) {
+    config.selectedRecipeKey = Object.keys(initialRecipes[selectedCategory.value])[0] ?? '';
   }
   
   // 追加食材編集モーダルで編集中のキーを格納(null=モーダル閉じてる、数値=編集中のcookIndex)
@@ -56,9 +56,9 @@ export const useSimulatorStore = defineStore('simulator', () => {
   });
   
   //■ 選択料理の変更
-  //config.selectedRecipeName が変わると自動で再計算される
+  //config.selectedRecipeKey が変わると自動で再計算される
   const targetRecipe = computed(() =>
-    Object.values(currentRecipes.value).find(d => d.name === config.selectedRecipeName)
+    currentRecipes.value?.[config.selectedRecipeKey]
   );
 
 
@@ -85,11 +85,18 @@ export const useSimulatorStore = defineStore('simulator', () => {
   });
 
   // ── actions: 操作（メソッドと同じ） ────────────────────────────
-  // ■レシピ名から、それがどのカテゴリに属するか逆引きする
-  const findCategoryByRecipeName = (recipeName) => {
-      return Object.keys(initialRecipes).find(category =>
-          Object.values(initialRecipes[category]).some(masterRecipe => masterRecipe.name === recipeName)
-      );
+  // ■レシピ名から、そのレシピのキーを逆引きする(旧履歴用)
+  const findRecipeKeyByName = (recipeName) => {
+    for (const category of Object.keys(initialRecipes)) {
+      const foundRecipe = Object.entries(initialRecipes[category]).find(([ ,recipe]) => recipe.name === recipeName);
+      
+      if (foundRecipe) return foundRecipe[0];
+    }
+  };
+
+  // ■キーから、そのレシピのカテゴリを逆引きする
+  const findCategoryByRecipeKey = (recipeKey) => {
+    return Object.keys(initialRecipes).find(category => initialRecipes[category][recipeKey]);
   };
 
   // ■ 余剰経験値算出
@@ -167,11 +174,10 @@ export const useSimulatorStore = defineStore('simulator', () => {
   //■カテゴリ変更時にカテゴリ内の最初の料理を表示
   watch(selectedCategory, () => {
     //履歴ロード時にカテゴリが違う場合にレシピが1つめのレシピになってしまうため事前にリスト内に存在するか確認
-    const list = Object.values(currentRecipes.value ?? {});
-    const exists = list.some(listRecipe => listRecipe.name === config.selectedRecipeName);
+    const exists = currentRecipes.value?.[config.selectedRecipeKey] !== undefined;
 
     if(!exists){
-      config.selectedRecipeName = list[0]?.name ?? '';
+      config.selectedRecipeKey  = Object.keys(currentRecipes.value ?? {})[0] ?? '';
     }
   });
 
@@ -224,9 +230,9 @@ export const useSimulatorStore = defineStore('simulator', () => {
     resetWeekScheduleSetting,
     openWeekScheduleModal,
     closeWeekScheduleModal ,
-    findCategoryByRecipeName,
+    findRecipeKeyByName,
+    findCategoryByRecipeKey,
 
-    
     openStatusManageModal,
     closeStatusManageModal,
   }
