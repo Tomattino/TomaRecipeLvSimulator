@@ -5,6 +5,17 @@ import { Recipe } from "../../models/common/Recipe.js";
 //■キー(例："scaldChunkySalad")は履歴の保存データに使うため、公開後は変更しないこと
 //  (変更すると、そのキーで保存された履歴が読めなくなる)
 export const saladRecipes = {
+    "grassKnotSaladWrap": new Recipe(
+        "くさむすびサラダラップ(仮)",
+        "/images/Recipe/Salad/grassknotsaladwrap.png",
+        [
+            new IngredientsInDishes(pokesleepIngredients["snackableNuts"], 30),
+            new IngredientsInDishes(pokesleepIngredients["glossyAvocado"], 22),
+            new IngredientsInDishes(pokesleepIngredients["warmingGinger"], 36),
+            new IngredientsInDishes(pokesleepIngredients["snoozyTomato"], 33),
+        ],
+        26350
+    ),
     "scaldChunkySalad": new Recipe(
         "ごろごろねっとうサラダ",
         "/images/Recipe/Salad/ScaldChunkySalad.png",
