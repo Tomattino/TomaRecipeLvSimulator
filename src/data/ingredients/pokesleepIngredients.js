@@ -20,4 +20,5 @@ export const pokesleepIngredients = {
     "greengrassSoybeans": new Ingredient("ワカクサ大豆", "/images/Ingredient/greengrassSoybeans.png" , 100),
     "moomooMilk": new Ingredient("モーモーミルク", "/images/Ingredient/moomooMilk.png" , 98),
     "fancyApple": new Ingredient("とくせんリンゴ", "/images/Ingredient/fancyApple.png" , 90),
+    "snackableNuts": new Ingredient("ひとくちナッツ", "/images/Ingredient/snackablenuts.png", 112),
 };

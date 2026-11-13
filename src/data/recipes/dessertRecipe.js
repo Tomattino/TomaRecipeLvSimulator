@@ -2,7 +2,7 @@ import { pokesleepIngredients } from "../ingredients/pokesleepIngredients.js";
 import { IngredientsInDishes } from "../../models/common/IngredientsInDishes.js";
 import { Recipe } from "../../models/common/Recipe.js";
 
-//■キー(例："bounceCurryUdon")は履歴の保存データに使うため、公開後は変更しないこと
+//■キー(例："dessertRecipes")は履歴の保存データに使うため、公開後は変更しないこと
 //  (変更すると、そのキーで保存された履歴が読めなくなる)
 export const dessertRecipes = {
     "honeyGatherChocolateWaffles": new Recipe(
@@ -37,6 +37,17 @@ export const dessertRecipes = {
         new IngredientsInDishes(pokesleepIngredients["rousingCoffee"], 24),
         ],
         20885
+    ),
+    "slowpokeTailRollCake": new Recipe(
+        "ヤドンのしっぽロールケーキ(仮)",
+        "/images/Recipe/Dessert/slowpoketailrollcake.png",
+        [   
+            new IngredientsInDishes(pokesleepIngredients["snackableNuts"], 26),
+            new IngredientsInDishes(pokesleepIngredients["slowpokeTail"], 10),
+            new IngredientsInDishes(pokesleepIngredients["greengrassSoybeans"], 22),
+            new IngredientsInDishes(pokesleepIngredients["fancyEgg"], 33),
+        ],
+        19846
     ),
     "zingZapSpicedCola": new Recipe(
         "スパークスパイスコーラ",

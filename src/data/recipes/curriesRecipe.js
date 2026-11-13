@@ -104,6 +104,16 @@ export const curryRecipes = {
         ],
         9010
     ),
+    "seedBombNaanAndCurry": new Recipe(
+        "たねばくだんナンカレー(仮)",
+        "/images/Recipe/Curries/seedbombnaanandcurry.png",
+        [
+            new IngredientsInDishes(pokesleepIngredients["snackableNuts"], 15),
+            new IngredientsInDishes(pokesleepIngredients["pumpkin"], 12),
+            new IngredientsInDishes(pokesleepIngredients["greengrassCorn"], 12),
+        ],
+        7950
+    ),
     "grilledTailCurry": new Recipe(
         "あぶりテールカレー",
         "/images/Recipe/Curries/grilledtailcurry.png",
